@@ -16,6 +16,8 @@ draft.data(data.files = "submitted_data/PL_DC_Annex_HAWG3 her.27.20-24_PL.xlsx",
            data.scripts = NULL,
            originator = "Data submitted to HAWG",
            title = "Data from Poland",
+           period = "2024",
+           access = "Restricted",
            file = T,
            append = F)
 
@@ -23,6 +25,8 @@ draft.data(data.files = "submitted_data/2025_DC_Annex_HAWG3 her.27.20-24_2024_GE
            data.scripts = NULL,
            originator = "Data submitted to HAWG",
            title = "Data from Germany",
+           period = "2024",
+           access = "Restricted",
            file = T,
            append = T)
 
@@ -30,6 +34,8 @@ draft.data(data.files = "submitted_data/NO_DC_Annex_HAWG3 her.27.20-24_NOR2024.x
            data.scripts = NULL,
            originator = "Data submitted to HAWG",
            title = "Data from Norway",
+           period = "2024",
+           access = "Restricted",
            file = T,
            append = T)
 
@@ -44,6 +50,8 @@ draft.data(data.files = "submitted_data/SE_2025 DC HAWG her.27.20-24 YellowSheet
            data.scripts = NULL,
            originator = "Data submitted to HAWG",
            title = "Data from Sweden",
+           period = "2024",
+           access = "Restricted",
            file = T,
            append = T)
 
