@@ -39,12 +39,14 @@ draft.data(data.files = "submitted_data/NO_DC_Annex_HAWG3 her.27.20-24_NOR2024.x
            file = T,
            append = T)
 
-# draft.data(data.files = "submitted_data/DC_Annex_HAWG3 her.27.20-24 template_DNK_2023.xls",
-#            data.scripts = NULL,
-#            originator = "Data submitted to HAWG",
-#            title = "Data from Denmark",
-#            file = T,
-#            append = T)
+draft.data(data.files = "submitted_data/DC_Annex_HAWG3 her.27.20-24 template_DNK_2024.xlsx",
+           data.scripts = NULL,
+           originator = "Data submitted to HAWG",
+           title = "Data from Denmark",
+           period = "2024",
+           access = "Restricted",
+           file = T,
+           append = T)
 
 draft.data(data.files = "submitted_data/SE_2025 DC HAWG her.27.20-24 YellowSheet_v2.xlsx",
            data.scripts = NULL,
