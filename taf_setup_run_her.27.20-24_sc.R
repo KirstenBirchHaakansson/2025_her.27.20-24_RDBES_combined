@@ -84,13 +84,13 @@ draft.data(data.files = "data_from_past_years",
            file = T,
            append = T)
 
-# draft.data(data.files = "imputations",
-#            data.scripts = NULL,
-#            originator = "Manual imputation",
-#            title = "Imputations",
-#            file = T,
-#            append = T)
-# 
+draft.data(data.files = "imputations",
+           data.scripts = NULL,
+           originator = "Manual imputation",
+           title = "Imputations",
+           file = T,
+           append = T)
+
 # draft.data(data.files = "split_data",
 #            data.scripts = NULL,
 #            originator = "Results needed for the split",
