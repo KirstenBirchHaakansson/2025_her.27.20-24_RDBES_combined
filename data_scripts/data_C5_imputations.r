@@ -3,7 +3,7 @@
 library(dplyr)
 library(sqldf)
 
-year_0 <- 2023
+year_0 <- 2024
 
 filled <-
   read.table(
@@ -52,6 +52,14 @@ canum <-
     ".rds",
     sep = ""
   ))
+canum_year_before <- readRDS(paste(
+  "boot/data/data_from_past_years/",
+  "C1_her2024_canum_without_imputations_", year_0-1, ".rds",
+  sep = ""
+))
+
+canum <- bind_rows(canum, canum_year_before)
+
 names(canum)
 canum1 <-
   canum[, c(
