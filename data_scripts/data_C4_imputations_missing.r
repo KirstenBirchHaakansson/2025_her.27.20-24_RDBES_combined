@@ -10,6 +10,14 @@ options("scipen" = 1000)
 
 canum <- readRDS(paste("data/","C1_her2024_canum_without_imputations_", year_0, ".rds", sep=""))
 
+canum_year_before <- readRDS(paste(
+  "boot/data/data_from_past_years/",
+  "C1_her2024_canum_without_imputations_", year_0-1, ".rds",
+  sep = ""
+))
+
+canum <- bind_rows(canum, canum_year_before)
+
 names(canum)
 
 canum1<-canum[, c("ctry","year","area","fleet","subFleet","quarter","sppName","wr","canum_1000","weca_g","leca_cm","catch_t","noSample","noLength","noAge")]
