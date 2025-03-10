@@ -75,7 +75,6 @@ generate_presentation_plot <- function(data, plot_type) {
 
 ```
 
-
 ```{r get_data, include = F}
 # CANUM
 
@@ -102,6 +101,8 @@ canum_a$subFleet[canum_a$subFleet %in% c("C - passive", "F - passive")] <- "pass
 canum_a$subFleet[canum_a$subFleet %in% c("C - purse seine")] <- "purse seine"
 canum_a$subFleet[canum_a$subFleet %in% c("C - trawl")] <- "trawl >= 32mm"
 canum_a$subFleet[canum_a$subFleet %in% c("D")] <- "trawl < 32mm"
+# Below Polish sampling of by-caught herring in the sprat fishery
+canum_a$subFleet[canum_a$subFleet %in% c("F - active")] <- "active < 32mm" 
 
 canum_b <-
   readRDS(paste(
@@ -135,7 +136,7 @@ canum_3$fleet <- as.factor(canum_3$fleet)
 canum_3$quarter <- as.factor(canum_3$quarter)
 canum_3$subFleet <- as.factor(canum_3$subFleet)
 
-mis <- read.csv(paste("../data/", "C4_her2024_missing_bio_", year_0, ".csv", sep = ""), sep = ";")
+mis <- read.csv(paste("../boot/data/imputations/", "C4_her2024_missing_bio_", year_0, "_filled.csv", sep = ""), sep = ";")
   
   
 ```
@@ -150,14 +151,22 @@ names(ddc.col)  <- ddc
 
 ```
 
-# Version `r paste0(lubridate::today(), "-v1")`
+# Version `r paste0(lubridate::today(), "-v3")`
+
 ## Row
+
 ### Versions
 
 2025-03-09-v1 - The presentation is mainly updated in relation to imputations in 27.3.a
 
+2025-03-09-v2 - Updated with Norwegian data and agreed imputations, plus more plots and tables. Still only done for area 27.3.a
+
+2025-03-09-v3 - Included slides for area 22-24. Still need the maps and maybe more
+
 # Overall lan, fig
+
 ## Row
+
 ### A lot of new sub-fleets
 
 ```{r, fig.width = 25}
@@ -172,6 +181,7 @@ ggplot(lan_fleet_plot, aes(x = year, y = catch_ton, fill = ctry)) +
 ```
 
 ## Row
+
 ### Map sub-fleet to fleet
 
 Since 2022 we have not combined the Swerdish C & D fleet
@@ -185,6 +195,7 @@ Since 2022 we have not combined the Swerdish C & D fleet
 `canum$fleet[canum$area %in% c("27.3.c.22", "27.3.b.23", "27.3.d.24")] <- "F"`
 
 ### Landings per fleet
+
 ```{r, eval = T, fig.width = 7}
 lan_fleet_plot <- summarise(group_by(subset(canum_3, year == year_0), ctry, fleet, area, year), catch_ton = sum(catch_t, na.rm = T)/9)
 
@@ -210,7 +221,9 @@ ggplot(lan_fleet_plot, aes(x = year, y = catch_ton, fill = ctry)) +
 ```
 
 # Overall lan & samp, tab
+
 ## Tabulated landings and sampling
+
 ```{r}
 samp_all <- distinct(canum_3, ctry, year, quarter, area, subFleet, catch_t, noSample, noLength, noAge)
 datatable(subset(samp_all, catch_t > 0 & year == year_0), filter = 'top', options = list(
@@ -220,8 +233,11 @@ class = 'cell-border stripe')
 ```
 
 # Lan & samp, 27.3.a, p
+
 ## Row
+
 ### Landings
+
 ```{r}
 
 canum_3a <- subset(canum_3, subFleet == "passive" & area %in% c("27.3.a.20", "27.3.a.21") & year == year_0)
@@ -230,7 +246,7 @@ generate_presentation_plot(canum_3a, "landings")
 
 ```
 
-### CANUM, relative, `r year_0` 
+### CANUM, relative, `r year_0`
 
 ```{r}
 canum_3a <- subset(canum_3, subFleet == "passive" & area %in% c("27.3.a.20", "27.3.a.21", "27.3.b.23") & year == year_0)
@@ -239,6 +255,7 @@ generate_presentation_plot(canum_3a, "relative age")
 ```
 
 ### Mean weight at age, `r year_0`
+
 ```{r}
 canum_3a <- subset(canum_3, subFleet == "passive" & area %in% c("27.3.a.20", "27.3.a.21", "27.3.b.23") & year == year_0)
 
@@ -246,7 +263,9 @@ generate_presentation_plot(canum_3a, "mean_weight")
 ```
 
 ## Row
+
 ### Samples, `r paste0(year_a, " - ", year_0)`
+
 ```{r}
 samp <- subset(canum_3, noSample > 0 & subFleet %in% c("passive") & area %in% c("27.3.a.20", "27.3.a.21", "27.3.b.23") & year %in% c(year_0, year_a))
 
@@ -267,6 +286,7 @@ generate_presentation_plot(canum_3a, "relative age")
 ```
 
 ### Mean weight at age, `r year_a` {.tabset}
+
 ```{r}
 canum_3a <- subset(canum_3, subFleet %in% c("passive") & area %in% c("27.3.a.20", "27.3.a.21", "27.3.b.23") & year == year_a)
 
@@ -274,13 +294,17 @@ generate_presentation_plot(canum_3a, "mean_weight")
 ```
 
 # Lan & samp, 27.3.a, p, cont.
+
 ## Row {data-height="50"}
-### Imputations 
-**Sweden how should I borrow?** 
-Swedish samples from Q4, 27.3.a.21 are used on all landings in 27.3.a
+
+### Knowlegde & imputations
+
+**Sweden how should I borrow?** Swedish samples from Q4, 27.3.a.21 are used on all landings in 27.3.a
 
 ## Row
-### Imputations, results
+
+### Knowlegde & imputations, results
+
 ```{r}
 datatable(subset(mis, catch_t > 0 & subFleet == "passive" & area %in% c("27.3.a.20", "27.3.a.21")), filter = 'top', options = list(
   pageLength = 25, autoWidth = F
@@ -289,8 +313,11 @@ class = 'cell-border stripe')
 ```
 
 # Lan & samp, 27.3.a, ps
+
 ## Row
+
 ### Landings
+
 ```{r}
 
 canum_3a <- subset(canum_3, subFleet == "purse seine" & area %in% c("27.3.a.20", "27.3.a.21") & year == year_0)
@@ -299,7 +326,7 @@ generate_presentation_plot(canum_3a, "landings")
 
 ```
 
-### CANUM, relative, `r year_0` 
+### CANUM, relative, `r year_0`
 
 ```{r}
 canum_3a <- subset(canum_3, subFleet == "purse seine" & area %in% c("27.3.a.20", "27.3.a.21") & year == year_0)
@@ -308,6 +335,7 @@ generate_presentation_plot(canum_3a, "relative age")
 ```
 
 ### Mean weight at age, `r year_0`
+
 ```{r}
 canum_3a <- subset(canum_3, subFleet == "purse seine" & area %in% c("27.3.a.20", "27.3.a.21") & year == year_0)
 
@@ -315,7 +343,9 @@ generate_presentation_plot(canum_3a, "mean_weight")
 ```
 
 ## Row
+
 ### Samples, `r paste0(year_a, " - ", year_0)`
+
 ```{r}
 samp <- subset(canum_3, noSample > 0 & subFleet %in% c("purse seine") & area %in% c("27.3.a.20", "27.3.a.21") & year %in% c(year_0, year_a))
 
@@ -336,6 +366,7 @@ generate_presentation_plot(canum_3a, "relative age")
 ```
 
 ### Mean weight at age, `r year_a` {.tabset}
+
 ```{r}
 canum_3a <- subset(canum_3, subFleet %in% c("purse seine") & area %in% c("27.3.a.20", "27.3.a.21") & year == year_a)
 
@@ -343,8 +374,11 @@ generate_presentation_plot(canum_3a, "mean_weight")
 ```
 
 # Lan & samp, 27.3.a, ps, cont.
+
 ## Row {data-height="150"}
-### Imputations 
+
+### Knowlegde & imputations
+
 Swedish comment: The samples reported under in SD 20 PS Q3 come from beach seiners (SB). The samples were composed of very small fish and are representative of the PS fleet in Q2 and Q4 when these beach seiners operate and purse-seiners dont. But should not be used in SD 20 PS Q4. The value in that quarter (much more significant) comes in the vast majority from catches of actual purse-seiners, which size distribution is much different (larger) from that of beach seiners. To input on those, it will be better to borrow samples and estimates from real purse-seine samples reported for 2023.
 
 Sweden advise that we use Q4 from 2023 on Q4
@@ -356,7 +390,9 @@ Only use Q3 Swedish samples on Q3 Swedish landings. The Norwegian landings in 27
 Use Q4, 2023 on all Q4 landings in 2024
 
 ## Row
-### Imputations, results
+
+### Knowlegde & imputations, results
+
 ```{r}
 datatable(subset(mis, catch_t > 0 & subFleet == "purse seine" & area %in% c("27.3.a.20", "27.3.a.21")), filter = 'top', options = list(
   pageLength = 25, autoWidth = F
@@ -364,9 +400,12 @@ datatable(subset(mis, catch_t > 0 & subFleet == "purse seine" & area %in% c("27.
 class = 'cell-border stripe')
 ```
 
-# Lan & samp, 27.3.a, t>32
+# Lan & samp, 27.3.a, t\>32
+
 ## Row
+
 ### Landings
+
 ```{r}
 
 canum_3a <- subset(canum_3, subFleet == "trawl >= 32mm" & area %in% c("27.3.a.20", "27.3.a.21") & year == year_0)
@@ -375,7 +414,7 @@ generate_presentation_plot(canum_3a, "landings")
 
 ```
 
-### CANUM, relative, `r year_0` 
+### CANUM, relative, `r year_0`
 
 ```{r}
 canum_3a <- subset(canum_3, subFleet == "trawl >= 32mm" & area %in% c("27.3.a.20", "27.3.a.21") & year == year_0)
@@ -384,6 +423,7 @@ generate_presentation_plot(canum_3a, "relative age")
 ```
 
 ### Mean weight at age, `r year_0`
+
 ```{r}
 canum_3a <- subset(canum_3, subFleet == "trawl >= 32mm" & area %in% c("27.3.a.20", "27.3.a.21") & year == year_0)
 
@@ -391,7 +431,9 @@ generate_presentation_plot(canum_3a, "mean_weight")
 ```
 
 ## Row
+
 ### Samples, `r paste0(year_a, " - ", year_0)`
+
 ```{r}
 samp <- subset(canum_3, noSample > 0 & subFleet %in% c("trawl >= 32mm") & area %in% c("27.3.a.20", "27.3.a.21") & year %in% c(year_0, year_a))
 
@@ -412,20 +454,25 @@ generate_presentation_plot(canum_3a, "relative age")
 ```
 
 ### Mean weight at age, `r year_a` {.tabset}
+
 ```{r}
 canum_3a <- subset(canum_3, subFleet %in% c("trawl >= 32mm") & area %in% c("27.3.a.20", "27.3.a.21") & year == year_a)
 
 generate_presentation_plot(canum_3a, "mean_weight")
 ```
 
-# Lan & samp, 27.3.a, t>32, cont.
+# Lan & samp, 27.3.a, t\>32, cont.
+
 ## Row {data-height="100"}
-### Imputations 
+
+### Knowlegde & imputations
+
 **OK to borrow from 2023?** Yes!
 
-
 ## Row
-### Imputations, results
+
+### Knowlegde & imputations, results
+
 ```{r}
 datatable(subset(mis, catch_t > 0 & subFleet == "trawl >= 32mm" & area %in% c("27.3.a.20", "27.3.a.21")), filter = 'top', options = list(
   pageLength = 25, autoWidth = F
@@ -433,9 +480,12 @@ datatable(subset(mis, catch_t > 0 & subFleet == "trawl >= 32mm" & area %in% c("2
 class = 'cell-border stripe')
 ```
 
-# Lan & samp, 27.3.a, t>32
+# Lan & samp, 27.3.a, t\<32
+
 ## Row
+
 ### Landings
+
 ```{r}
 
 canum_3a <- subset(canum_3, subFleet == "trawl < 32mm" & area %in% c("27.3.a.20", "27.3.a.21") & year == year_0)
@@ -444,7 +494,7 @@ generate_presentation_plot(canum_3a, "landings")
 
 ```
 
-### CANUM, relative, `r year_0` 
+### CANUM, relative, `r year_0`
 
 ```{r}
 canum_3a <- subset(canum_3, subFleet == "trawl < 32mm" & area %in% c("27.3.a.20", "27.3.a.21") & year == year_0)
@@ -453,6 +503,7 @@ generate_presentation_plot(canum_3a, "relative age")
 ```
 
 ### Mean weight at age, `r year_0`
+
 ```{r}
 canum_3a <- subset(canum_3, subFleet == "trawl < 32mm" & area %in% c("27.3.a.20", "27.3.a.21") & year == year_0)
 
@@ -460,7 +511,9 @@ generate_presentation_plot(canum_3a, "mean_weight")
 ```
 
 ## Row
+
 ### Samples, `r paste0(year_a, " - ", year_0)`
+
 ```{r}
 samp <- subset(canum_3, noSample > 0 & subFleet %in% c("trawl < 32mm") & area %in% c("27.3.a.20", "27.3.a.21") & year %in% c(year_0, year_a))
 
@@ -481,19 +534,25 @@ generate_presentation_plot(canum_3a, "relative age")
 ```
 
 ### Mean weight at age, `r year_a` {.tabset}
+
 ```{r}
 canum_3a <- subset(canum_3, subFleet %in% c("trawl < 32mm") & area %in% c("27.3.a.20", "27.3.a.21") & year == year_a)
 
 generate_presentation_plot(canum_3a, "mean_weight")
 ```
 
-# Lan & samp, 27.3.a, t<32, cont.
+# Lan & samp, 27.3.a, t\<32, cont.
+
 ## Row {data-height="100"}
-### Imputations 
+
+### Knowlegde & imputations
+
 **Q2 goes to Q1, Q4 goes to Q3?** - Yes!
 
 ## Row
-### Imputations, results
+
+### Knowlegde & imputations, results
+
 ```{r}
 datatable(subset(mis, catch_t > 0 & subFleet == "trawl < 32mm" & area %in% c("27.3.a.20", "27.3.a.21")), filter = 'top', options = list(
   pageLength = 25, autoWidth = F
@@ -501,3 +560,251 @@ datatable(subset(mis, catch_t > 0 & subFleet == "trawl < 32mm" & area %in% c("27
 class = 'cell-border stripe')
 ```
 
+# Lan & samp, 27.3.bcd, p
+
+## Row
+
+### Landings
+
+```{r}
+
+canum_3a <- subset(canum_3, subFleet == "passive" & area %in% c("27.3.b.23", "27.3.c.22", "27.3.d.24") & year == year_0)
+
+generate_presentation_plot(canum_3a, "landings")
+
+```
+
+### CANUM, relative, `r year_0`
+
+```{r}
+canum_3a <- subset(canum_3, subFleet == "passive" & area %in% c("27.3.b.23", "27.3.c.22", "27.3.d.24") & year == year_0)
+
+generate_presentation_plot(canum_3a, "relative age")
+```
+
+### Mean weight at age, `r year_0`
+
+```{r}
+canum_3a <- subset(canum_3, subFleet == "passive" & area %in% c("27.3.b.23", "27.3.c.22", "27.3.d.24") & year == year_0)
+
+generate_presentation_plot(canum_3a, "mean_weight")
+```
+
+## Row
+
+### Samples, `r paste0(year_a, " - ", year_0)`
+
+```{r}
+samp <- subset(canum_3, noSample > 0 & subFleet == "passive" & area %in% c("27.3.b.23", "27.3.c.22", "27.3.d.24") & year %in% c(year_0, year_a))
+
+samp_1 <- distinct(samp, ctry, year, quarter, area, subFleet, noSample, noLength, noAge)
+
+datatable(samp_1, filter = 'top', options = list(
+  pageLength = 25, autoWidth = F
+),
+class = 'cell-border stripe')
+```
+
+### CANUM, relative, `r year_a` {.tabset}
+
+```{r}
+canum_3a <- subset(canum_3, subFleet == "passive" & area %in% c("27.3.b.23", "27.3.c.22", "27.3.d.24") & year == year_a)
+
+generate_presentation_plot(canum_3a, "relative age")
+```
+
+### Mean weight at age, `r year_a` {.tabset}
+
+```{r}
+canum_3a <- subset(canum_3, subFleet == "passive" & area %in% c("27.3.b.23", "27.3.c.22", "27.3.d.24") & year == year_a)
+
+generate_presentation_plot(canum_3a, "mean_weight")
+```
+
+# Lan & samp, 27.3.bcd, p, cont.
+
+## Row {data-height="100"}
+
+### Knowlegde & imputations
+
+27.3.b.23: Use Swedish samples on Danish landings quarter per quarter?
+
+27.3.c.22: Use German samples on Danish. Q4 goes to Q3?
+
+27.3.d.24: Q2, German samples on unsampled. Q4 cover all unsampled in Q3 & Q4?
+
+## Row
+
+### Knowlegde & imputations, results
+
+```{r}
+datatable(subset(mis, catch_t > 0 & subFleet == "passive" & area %in% c("27.3.b.23", "27.3.c.22", "27.3.d.24")), filter = 'top', options = list(
+  pageLength = 25, autoWidth = F
+),
+class = 'cell-border stripe')
+```
+
+
+
+# Lan & samp, 27.3.bcd, a>32
+
+## Row
+
+### Landings
+
+```{r}
+
+canum_3a <- subset(canum_3, subFleet == "active >= 32mm" & area %in% c("27.3.c.22", "27.3.d.24") & year == year_0)
+
+generate_presentation_plot(canum_3a, "landings")
+
+```
+
+### CANUM, relative, `r year_0`
+
+```{r}
+canum_3a <- subset(canum_3, subFleet %in% c("active >= 32mm", "active < 32mm") & area %in% c("27.3.c.22", "27.3.d.24") & year == year_0)
+
+generate_presentation_plot(canum_3a, "relative age")
+```
+
+### Mean weight at age, `r year_0`
+
+```{r}
+canum_3a <- subset(canum_3, subFleet %in% c("active >= 32mm", "active < 32mm") & area %in% c("27.3.c.22", "27.3.d.24") & year == year_0)
+
+generate_presentation_plot(canum_3a, "mean_weight")
+```
+
+## Row
+
+### Samples, `r paste0(year_a, " - ", year_0)`
+
+```{r}
+samp <- subset(canum_3, noSample > 0 & subFleet %in% c("active >= 32mm", "active < 32mm") & area %in% c("27.3.c.22", "27.3.d.24") & year %in% c(year_0, year_a))
+
+samp_1 <- distinct(samp, ctry, year, quarter, area, subFleet, noSample, noLength, noAge)
+
+datatable(samp_1, filter = 'top', options = list(
+  pageLength = 25, autoWidth = F
+),
+class = 'cell-border stripe')
+```
+
+### CANUM, relative, `r year_a` {.tabset}
+
+```{r}
+canum_3a <- subset(canum_3, subFleet %in% c("active >= 32mm", "active < 32mm") & area %in% c("27.3.c.22", "27.3.d.24") & year == year_a)
+
+generate_presentation_plot(canum_3a, "relative age")
+```
+
+### Mean weight at age, `r year_a` {.tabset}
+
+```{r}
+canum_3a <- subset(canum_3, subFleet %in% c("active >= 32mm", "active < 32mm") & area %in% c("27.3.c.22", "27.3.d.24") & year == year_a)
+
+generate_presentation_plot(canum_3a, "mean_weight")
+```
+
+# Lan & samp, 27.3.bcd, a>32, cont.
+
+## Row {data-height="100"}
+
+### Knowlegde & imputations
+2024: A sample from the Polish sprat fishery. Use on all?
+
+2023: A sample from the Polish sprat fishery. We used that one on all active in area 27.3.d.24
+
+## Row
+
+### Knowlegde & imputations, results
+
+```{r}
+datatable(subset(mis, catch_t > 0 & subFleet == "active >= 32mm" & area %in% c("27.3.c.22", "27.3.d.24")), filter = 'top', options = list(
+  pageLength = 25, autoWidth = F
+),
+class = 'cell-border stripe')
+```
+
+
+# Lan & samp, 27.3.bcd, a<32
+
+## Row
+
+### Landings
+
+```{r}
+
+canum_3a <- subset(canum_3, subFleet == "active < 32mm" & area %in% c("27.3.c.22", "27.3.d.24") & year == year_0)
+
+generate_presentation_plot(canum_3a, "landings")
+
+```
+
+### CANUM, relative, `r year_0`
+
+```{r}
+canum_3a <- subset(canum_3, subFleet %in% c("active < 32mm") & area %in% c("27.3.b.23", "27.3.c.22", "27.3.d.24") & year == year_0)
+
+generate_presentation_plot(canum_3a, "relative age")
+```
+
+### Mean weight at age, `r year_0`
+
+```{r}
+canum_3a <- subset(canum_3, subFleet %in% c("active < 32mm") & area %in% c("27.3.b.23", "27.3.c.22", "27.3.d.24") & year == year_0)
+
+generate_presentation_plot(canum_3a, "mean_weight")
+```
+
+## Row
+
+### Samples, `r paste0(year_a, " - ", year_0)`
+
+```{r}
+samp <- subset(canum_3, noSample > 0 & subFleet %in% c("active < 32mm") & area %in% c("27.3.b.23", "27.3.c.22", "27.3.d.24") & year %in% c(year_0, year_a))
+
+samp_1 <- distinct(samp, ctry, year, quarter, area, subFleet, noSample, noLength, noAge)
+
+datatable(samp_1, filter = 'top', options = list(
+  pageLength = 25, autoWidth = F
+),
+class = 'cell-border stripe')
+```
+
+### CANUM, relative, `r year_a` {.tabset}
+
+```{r}
+canum_3a <- subset(canum_3, subFleet %in% c("active < 32mm") & area %in% c("27.3.b.23", "27.3.c.22", "27.3.d.24") & year == year_a)
+
+generate_presentation_plot(canum_3a, "relative age")
+```
+
+### Mean weight at age, `r year_a` {.tabset}
+
+```{r}
+canum_3a <- subset(canum_3, subFleet %in% c("active < 32mm") & area %in% c("27.3.b.23", "27.3.c.22", "27.3.d.24") & year == year_a)
+
+generate_presentation_plot(canum_3a, "mean_weight")
+```
+
+# Lan & samp, 27.3.bcd, a<32, cont.
+
+## Row {data-height="100"}
+
+### Knowlegde & imputations
+2024: A sample from the Polish sprat fishery. Use on all?
+
+2023: A sample from the Polish sprat fishery. We used that one on all active in area 27.3.d.24
+
+## Row
+
+### Knowlegde & imputations, results
+
+```{r}
+datatable(subset(mis, catch_t > 0 & subFleet == "active < 32mm" & area %in% c("27.3.b.23", "27.3.c.22", "27.3.d.24")), filter = 'top', options = list(
+  pageLength = 25, autoWidth = F
+),
+class = 'cell-border stripe')
+```
