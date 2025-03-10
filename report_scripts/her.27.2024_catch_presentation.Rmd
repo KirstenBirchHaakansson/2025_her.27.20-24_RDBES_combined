@@ -1,0 +1,81 @@
+---
+title: "her.27.20-24 - catch data 2024"
+output: 
+  flexdashboard::flex_dashboard:
+    theme: 
+      primary: "#990000"
+    orientation: columns
+    vertical_layout: fill
+    source_code: embed
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(DT)
+
+year_ass <- 2023
+year_data <- 2022
+path_input <- paste0("C:/Users/kibi/OneDrive - Danmarks Tekniske Universitet/WBSS_new/", year_ass, "/compile_data/cacth/output/")
+dat_1 <- read.csv(paste0(path_input, "catch_no_sop_year_ctry_1989_", year_data, ".csv"))
+```
+
+# Info & intro
+
+## Column {data-width="500"}
+
+### Version `r lubridate::today()`
+
+1.  20250309
+
+2.  xxxx
+
+### Info
+
+## Column {data-width="500"}
+
+### Fleets
+### Issues
+
+# Overall landings
+
+## Column {data-width="600"}
+
+### Time series of reported landings
+
+## Column {data-width="400"}
+
+### Chart 2
+
+```{r}
+
+datatable(dat_1, filter = 'top', options = list(
+  pageLength = 25, autoWidth = F
+),
+class = 'cell-border stripe')
+```
+
+# 27.3.a landings and sampling {data-orientation="rows"}
+
+## Row {data-height="500"}
+
+### Chart 1
+
+```{r}
+```
+
+### Chart 2
+
+```{r}
+```
+
+## Row {data-height="500"}
+
+### Chart 3
+
+```{r}
+```
+
+### Chart 4
+
+```{r}
+```
