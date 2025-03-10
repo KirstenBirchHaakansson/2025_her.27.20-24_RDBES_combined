@@ -57,13 +57,15 @@ draft.data(data.files = "submitted_data/SE_2025 DC HAWG her.27.20-24 YellowSheet
            file = T,
            append = T)
 
-# draft.data(data.files = "data_from_past_years",
-#            data.scripts = NULL,
-#            originator = "Data from pasts years",
-#            title = "Paste years",
-#            file = T,
-#            append = T)
-# 
+draft.data(data.files = "data_from_past_years",
+           data.scripts = NULL,
+           originator = "Data from pasts years",
+           title = "Paste years",
+           period = "2020-2023",
+           access = "Restricted",
+           file = T,
+           append = T)
+
 # draft.data(data.files = "imputations",
 #            data.scripts = NULL,
 #            originator = "Manual imputation",
