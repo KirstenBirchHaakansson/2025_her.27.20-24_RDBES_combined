@@ -141,10 +141,17 @@ filled4 <- arrange(filled4, year, quarter, ctry, area, fleet, wr)
 filled4$canumNew_1000 <-
   (filled4$canum_1000 / filled4$catch_t_canum) * filled4$catch_t
 
-filled4$fleet <- substr(filled4$subFleet, 1, 1)
-unique(filled4$fleet)
+
+filled4$fleet[filled4$area %in% c("27.3.a.20", "27.3.a.21") &
+              filled4$subFleet %in% c("passive", "purse seine", "trawl >= 32mm")] <- "C"
+
+filled4$fleet[filled4$area %in% c("27.3.a.20", "27.3.a.21") &
+              filled4$subFleet %in% c("trawl < 32mm")] <- "D"
+
+filled4$fleet[filled4$area %in% c("27.3.c.22", "27.3.b.23", "27.3.d.24")] <- "F"
 
 filled4 <- subset(filled4, year == year_0)
+unique(filled4$fleet)
 
 filled4$canumSop <- filled4$canumNew_1000 * (filled4$weca_g / 1000)
 
