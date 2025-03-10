@@ -39,6 +39,24 @@ draft.data(data.files = "submitted_data/NO_DC_Annex_HAWG3 her.27.20-24_NOR2024.x
            file = T,
            append = T)
 
+draft.data(data.files = "submitted_data/NO_DC_Annex_HAWG3 her.27.20-24_NOR2024_v2.xlsx",
+           data.scripts = NULL,
+           originator = "Data corrected by Kirsten",
+           title = "Year corrected by Kirsten",
+           period = "2024",
+           access = "Restricted",
+           file = T,
+           append = T)
+
+draft.data(data.files = "submitted_data/DC_Annex_HAWG3 her.27.20-24_NOR2024_v3.xlsx",
+           data.scripts = NULL,
+           originator = "Data submitted to HAWG",
+           title = "Norway have included samples from the transfer area",
+           period = "2024",
+           access = "Restricted",
+           file = T,
+           append = T)
+
 draft.data(data.files = "submitted_data/DC_Annex_HAWG3 her.27.20-24 template_DNK_2024.xlsx",
            data.scripts = NULL,
            originator = "Data submitted to HAWG",

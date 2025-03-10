@@ -17,7 +17,7 @@ dnkFile <- "DC_Annex_HAWG3 her.27.20-24 template_DNK_2024.xlsx"
 gerFile <- "2025_DC_Annex_HAWG3 her.27.20-24_2024_GER.xlsx"
 polFile <- "PL_DC_Annex_HAWG3 her.27.20-24_PL.xlsx"
 sweFile <- "SE_2025 DC HAWG her.27.20-24 YellowSheet_v2.xlsx"
-norFile <- "NO_DC_Annex_HAWG3 her.27.20-24_NOR2024.xlsx"
+norFile <- "DC_Annex_HAWG3 her.27.20-24_NOR2024_v3.xlsx"
 
 
 # Read in data ----
