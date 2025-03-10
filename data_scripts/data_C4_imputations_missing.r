@@ -4,7 +4,7 @@ library(sqldf)
 
 type <- "v1"
 
-year_0 <- 2023
+year_0 <- 2024
 
 options("scipen" = 1000)
 
@@ -78,13 +78,13 @@ canumSum$comment <-
 canumSum$useYear <-
   ifelse(canumSum$noSample > 0 |
            canumSum$comment == "National imputation",
-         canumSum$ctry,
+         canumSum$year,
          "")
 
 canumSum$useCtry <-
   ifelse(canumSum$noSample > 0 |
            canumSum$comment == "National imputation",
-         canumSum$year,
+         canumSum$ctry,
          "")
 canumSum$useArea <-
   ifelse(canumSum$noSample > 0 |
