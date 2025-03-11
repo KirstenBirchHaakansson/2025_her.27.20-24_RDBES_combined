@@ -84,6 +84,15 @@ draft.data(data.files = "submitted_data/SE_2025 DC HAWG her.27.20-24 YellowSheet
            file = T,
            append = T)
 
+draft.data(data.files = "submitted_data/SE_2025 DC HAWG her.27.20-24 YellowSheet_v3.xlsx",
+           data.scripts = NULL,
+           originator = "Kibi",
+           title = "Corrected a fleet without landings in 27.3.b.23",
+           period = "2024",
+           access = "Restricted",
+           file = T,
+           append = T)
+
 draft.data(data.files = "data_from_past_years",
            data.scripts = NULL,
            originator = "Data from pasts years",
