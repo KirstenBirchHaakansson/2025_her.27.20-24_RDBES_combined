@@ -303,7 +303,7 @@ generate_presentation_plot(canum_3a, "mean_weight")
 
 ## Row
 
-### Knowlegde & imputations, results
+### Imputations, results
 
 ```{r}
 datatable(subset(mis, catch_t > 0 & subFleet == "passive" & area %in% c("27.3.a.20", "27.3.a.21")), filter = 'top', options = list(
@@ -391,7 +391,7 @@ Use Q4, 2023 on all Q4 landings in 2024
 
 ## Row
 
-### Knowlegde & imputations, results
+### Imputations, results
 
 ```{r}
 datatable(subset(mis, catch_t > 0 & subFleet == "purse seine" & area %in% c("27.3.a.20", "27.3.a.21")), filter = 'top', options = list(
@@ -471,7 +471,7 @@ generate_presentation_plot(canum_3a, "mean_weight")
 
 ## Row
 
-### Knowlegde & imputations, results
+### Imputations, results
 
 ```{r}
 datatable(subset(mis, catch_t > 0 & subFleet == "trawl >= 32mm" & area %in% c("27.3.a.20", "27.3.a.21")), filter = 'top', options = list(
@@ -551,7 +551,7 @@ generate_presentation_plot(canum_3a, "mean_weight")
 
 ## Row
 
-### Knowlegde & imputations, results
+### Imputations, results
 
 ```{r}
 datatable(subset(mis, catch_t > 0 & subFleet == "trawl < 32mm" & area %in% c("27.3.a.20", "27.3.a.21")), filter = 'top', options = list(
@@ -623,19 +623,19 @@ generate_presentation_plot(canum_3a, "mean_weight")
 
 # Lan & samp, 27.3.bcd, p, cont.
 
-## Row {data-height="100"}
+## Row {data-height="150"}
 
 ### Knowlegde & imputations
 
-27.3.b.23: Use Swedish samples on Danish landings quarter per quarter?
+27.3.b.23: Use Swedish samples on Danish landings quarter per quarter? - Yes!
 
-27.3.c.22: Use German samples on Danish. Q4 goes to Q3?
+27.3.c.22: Use German samples on Danish. Q4 goes to Q3? - Yes!
 
-27.3.d.24: Q2, German samples on unsampled. Q4 cover all unsampled in Q3 & Q4?
+27.3.d.24: Q2, German samples on unsampled. Q4 cover all unsampled in Q3 & Q4? - Yes!
 
 ## Row
 
-### Knowlegde & imputations, results
+### Imputations, results
 
 ```{r}
 datatable(subset(mis, catch_t > 0 & subFleet == "passive" & area %in% c("27.3.b.23", "27.3.c.22", "27.3.d.24")), filter = 'top', options = list(
@@ -709,16 +709,22 @@ generate_presentation_plot(canum_3a, "mean_weight")
 
 # Lan & samp, 27.3.bcd, a>32, cont.
 
-## Row {data-height="100"}
+## Row {data-height="200"}
 
 ### Knowlegde & imputations
 2024: A sample from the Polish sprat fishery. Use on all?
 
 2023: A sample from the Polish sprat fishery. We used that one on all active in area 27.3.d.24
 
+Conclusion: We use Q4, 2024 on Q4. Q3, 2023 on all other Q's. 
+
+The age distributions in the F fleet in the past seems to change a lot over the years, but the fleets has also changed a lot, from a single F fleet to more disaggregated fleets, this makes it difficult to impute over years
+
+We need a better understanding of the fishery and possible samples from 27.3.d.25 when it come to Polish data. Hopefully the RDBES data will give some insight into fleets, samples and future imputations. Together with raw RDBES data it may be beneficial to re-submit yellow sheets / IC for the last couple of years for the benchmark, so we can make more informed decisions.
+
 ## Row
 
-### Knowlegde & imputations, results
+### Imputations, results
 
 ```{r}
 datatable(subset(mis, catch_t > 0 & subFleet == "active >= 32mm" & area %in% c("27.3.c.22", "27.3.d.24")), filter = 'top', options = list(
@@ -791,16 +797,22 @@ generate_presentation_plot(canum_3a, "mean_weight")
 
 # Lan & samp, 27.3.bcd, a<32, cont.
 
-## Row {data-height="100"}
+## Row {data-height="200"}
 
 ### Knowlegde & imputations
 2024: A sample from the Polish sprat fishery. Use on all?
 
 2023: A sample from the Polish sprat fishery. We used that one on all active in area 27.3.d.24
 
+Conclusion: We use Q4, 2024 on Q4. Q3, 2023 on all other Q's. 
+
+The age distributions in the F fleet in the past seems to change a lot over the years, but the fleets has also changed a lot, from a single F fleet to more disaggregated fleets, this makes it difficult to impute over years
+
+We need a better understanding of the fishery and possible samples from 27.3.d.25 when it come to Polish data. Hopefully the RDBES data will give some insight into fleets, samples and future imputations. Together with raw RDBES data it may be beneficial to re-submit yellow sheets / IC for the last couple of years for the benchmark, so we can make more informed decisions.
+
 ## Row
 
-### Knowlegde & imputations, results
+### Imputations, results
 
 ```{r}
 datatable(subset(mis, catch_t > 0 & subFleet == "active < 32mm" & area %in% c("27.3.b.23", "27.3.c.22", "27.3.d.24")), filter = 'top', options = list(
