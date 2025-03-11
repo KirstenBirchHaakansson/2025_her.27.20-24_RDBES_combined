@@ -5,7 +5,7 @@ library(sqldf)
 
 options("scipen" = 1000)
 
-year_0 <- 2023
+year_0 <- 2024
 
 
 #Read in and recode split proportions from Henrik
@@ -17,7 +17,7 @@ split <-
       "boot/data/split_data/",
       "cmoe_split_",
       year_0,
-      "_SD20SD21_v4_202403131539.csv",
+      "_SD20SD21_v2.csv",
       sep = ""
     ),
     sep = ",",
