@@ -135,9 +135,23 @@ canum_3$area <- as.factor(canum_3$area)
 canum_3$fleet <- as.factor(canum_3$fleet)
 canum_3$quarter <- as.factor(canum_3$quarter)
 canum_3$subFleet <- as.factor(canum_3$subFleet)
+canum_3$year <- as.numeric(canum_3$year)
 
-mis <- read.csv(paste("../boot/data/imputations/", "C4_her2024_missing_bio_", year_0, "_filled.csv", sep = ""), sep = ";")
-  
+mis <- readRDS(paste(
+    "../data/",
+    "C5_her2024_canum_with_imputations_subfleets_", year_0, ".rds",
+    sep = ""
+  ))
+
+mis <- distinct(mis, ctry, year, area, fleet, subFleet, quarter, catch_t, 
+                noSamples, noLength, noAge, comment, comment1) 
+
+mis$ctry <- as.factor(mis$ctry)
+mis$area <- as.factor(mis$area)
+mis$fleet <- as.factor(mis$fleet)
+mis$quarter <- as.factor(mis$quarter)
+mis$subFleet <- as.factor(mis$subFleet)
+mis$year <- as.numeric(mis$year)
   
 ```
 
@@ -151,7 +165,7 @@ names(ddc.col)  <- ddc
 
 ```
 
-# Version `r paste0(lubridate::today(), "-v3")`
+# Version `r paste0(lubridate::today(), "-v4")`
 
 ## Row
 
@@ -162,6 +176,8 @@ names(ddc.col)  <- ddc
 2025-03-09-v2 - Updated with Norwegian data and agreed imputations, plus more plots and tables. Still only done for area 27.3.a
 
 2025-03-09-v3 - Included slides for area 22-24. Still need the maps and maybe more
+
+2025-03-11-v4 - Included decision and results from area 22-24. The resulting imputations are coming from the output instead of the input file, which is a more correct check
 
 # Overall lan, fig
 
@@ -225,8 +241,9 @@ ggplot(lan_fleet_plot, aes(x = year, y = catch_ton, fill = ctry)) +
 ## Tabulated landings and sampling
 
 ```{r}
-samp_all <- distinct(canum_3, ctry, year, quarter, area, subFleet, catch_t, noSample, noLength, noAge)
-datatable(subset(samp_all, catch_t > 0 & year == year_0), filter = 'top', options = list(
+samp_all <- distinct(subset(canum_3, catch_t > 0 & year == year_0), ctry, year, quarter, area, subFleet, catch_t, noSample, noLength, noAge)
+
+datatable(samp_all, filter = 'top', options = list(
   pageLength = 25, autoWidth = F
 ),
 class = 'cell-border stripe')
@@ -306,7 +323,12 @@ generate_presentation_plot(canum_3a, "mean_weight")
 ### Imputations, results
 
 ```{r}
-datatable(subset(mis, catch_t > 0 & subFleet == "passive" & area %in% c("27.3.a.20", "27.3.a.21")), filter = 'top', options = list(
+mis_1 <- subset(mis, catch_t > 0 & subFleet == "passive" & area %in% c("27.3.a.20", "27.3.a.21"))
+
+mis_1$comment <- as.factor(mis_1$comment)
+mis_1$comment1 <- as.factor(mis_1$comment1)
+
+datatable(mis_1, filter = 'top', options = list(
   pageLength = 25, autoWidth = F
 ),
 class = 'cell-border stripe')
@@ -394,10 +416,17 @@ Use Q4, 2023 on all Q4 landings in 2024
 ### Imputations, results
 
 ```{r}
-datatable(subset(mis, catch_t > 0 & subFleet == "purse seine" & area %in% c("27.3.a.20", "27.3.a.21")), filter = 'top', options = list(
+
+mis_1 <- subset(mis, catch_t > 0 & subFleet == "purse seine" & area %in% c("27.3.a.20", "27.3.a.21"))
+
+mis_1$comment <- as.factor(mis_1$comment)
+mis_1$comment1 <- as.factor(mis_1$comment1)
+
+datatable(mis_1, filter = 'top', options = list(
   pageLength = 25, autoWidth = F
 ),
 class = 'cell-border stripe')
+
 ```
 
 # Lan & samp, 27.3.a, t\>32
@@ -474,7 +503,13 @@ generate_presentation_plot(canum_3a, "mean_weight")
 ### Imputations, results
 
 ```{r}
-datatable(subset(mis, catch_t > 0 & subFleet == "trawl >= 32mm" & area %in% c("27.3.a.20", "27.3.a.21")), filter = 'top', options = list(
+
+mis_1 <- subset(mis, catch_t > 0 & subFleet == "trawl >= 32mm" & area %in% c("27.3.a.20", "27.3.a.21"))
+
+mis_1$comment <- as.factor(mis_1$comment)
+mis_1$comment1 <- as.factor(mis_1$comment1)
+
+datatable(mis_1, filter = 'top', options = list(
   pageLength = 25, autoWidth = F
 ),
 class = 'cell-border stripe')
@@ -554,7 +589,12 @@ generate_presentation_plot(canum_3a, "mean_weight")
 ### Imputations, results
 
 ```{r}
-datatable(subset(mis, catch_t > 0 & subFleet == "trawl < 32mm" & area %in% c("27.3.a.20", "27.3.a.21")), filter = 'top', options = list(
+mis_1 <- subset(mis, catch_t > 0 & subFleet == "trawl < 32mm" & area %in% c("27.3.a.20", "27.3.a.21"))
+
+mis_1$comment <- as.factor(mis_1$comment)
+mis_1$comment1 <- as.factor(mis_1$comment1)
+
+datatable(mis_1, filter = 'top', options = list(
   pageLength = 25, autoWidth = F
 ),
 class = 'cell-border stripe')
@@ -638,7 +678,12 @@ generate_presentation_plot(canum_3a, "mean_weight")
 ### Imputations, results
 
 ```{r}
-datatable(subset(mis, catch_t > 0 & subFleet == "passive" & area %in% c("27.3.b.23", "27.3.c.22", "27.3.d.24")), filter = 'top', options = list(
+mis_1 <- subset(mis, catch_t > 0 & subFleet == "passive" & area %in% c("27.3.b.23", "27.3.c.22", "27.3.d.24"))
+
+mis_1$comment <- as.factor(mis_1$comment)
+mis_1$comment1 <- as.factor(mis_1$comment1)
+
+datatable(mis_1, filter = 'top', options = list(
   pageLength = 25, autoWidth = F
 ),
 class = 'cell-border stripe')
@@ -727,7 +772,12 @@ We need a better understanding of the fishery and possible samples from 27.3.d.2
 ### Imputations, results
 
 ```{r}
-datatable(subset(mis, catch_t > 0 & subFleet == "active >= 32mm" & area %in% c("27.3.c.22", "27.3.d.24")), filter = 'top', options = list(
+mis_1 <- subset(mis, catch_t > 0 & subFleet == "active >= 32mm" & area %in% c("27.3.c.22", "27.3.d.24"))
+
+mis_1$comment <- as.factor(mis_1$comment)
+mis_1$comment1 <- as.factor(mis_1$comment1)
+
+datatable(mis_1, filter = 'top', options = list(
   pageLength = 25, autoWidth = F
 ),
 class = 'cell-border stripe')
@@ -815,7 +865,12 @@ We need a better understanding of the fishery and possible samples from 27.3.d.2
 ### Imputations, results
 
 ```{r}
-datatable(subset(mis, catch_t > 0 & subFleet == "active < 32mm" & area %in% c("27.3.b.23", "27.3.c.22", "27.3.d.24")), filter = 'top', options = list(
+mis_1 <- subset(mis, catch_t > 0 & subFleet == "active < 32mm" & area %in% c("27.3.b.23", "27.3.c.22", "27.3.d.24"))
+
+mis_1$comment <- as.factor(mis_1$comment)
+mis_1$comment1 <- as.factor(mis_1$comment1)
+
+datatable(mis_1, filter = 'top', options = list(
   pageLength = 25, autoWidth = F
 ),
 class = 'cell-border stripe')
