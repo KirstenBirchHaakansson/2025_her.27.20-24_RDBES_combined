@@ -142,6 +142,13 @@ draft.data(data.files = "imputations",
 #            file = T,
 #            append = T)
 
+draft.data(data.files = "kibi_notes",
+           data.scripts = NULL,
+           originator = "Kibi",
+           title = "Kibi's notes",
+           file = T,
+           append = T)
+
 taf.boot()
 
 # mkdir("data")
