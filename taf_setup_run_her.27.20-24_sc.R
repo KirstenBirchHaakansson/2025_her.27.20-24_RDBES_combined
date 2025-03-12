@@ -21,6 +21,15 @@ draft.data(data.files = "submitted_data/PL_DC_Annex_HAWG3 her.27.20-24_PL.xlsx",
            file = T,
            append = F)
 
+draft.data(data.files = "submitted_data/PL_DC_Annex_HAWG3 her.27.20-24_PL_v2.xlsx",
+           data.scripts = NULL,
+           originator = "Data submitted to HAWG corrected by kibi",
+           title = "Sample numbers without any estimated biology caused problems in iding needed imputations",
+           period = "2024",
+           access = "Restricted",
+           file = T,
+           append = F)
+
 draft.data(data.files = "submitted_data/2025_DC_Annex_HAWG3 her.27.20-24_2024_GER.xlsx",
            data.scripts = NULL,
            originator = "Data submitted to HAWG",
