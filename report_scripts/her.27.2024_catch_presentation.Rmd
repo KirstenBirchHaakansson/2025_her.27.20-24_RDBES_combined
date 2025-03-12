@@ -185,15 +185,17 @@ names(ddc.col)  <- ddc
 
 ### A lot of new sub-fleets
 
-```{r, fig.width = 25}
+```{r, fig.width = 30}
 lan_fleet_plot <- summarise(group_by(subset(canum_3, year == year_0), ctry, subFleet, area, year), catch_ton = sum(catch_t, na.rm = T)/9)
 
-ggplot(lan_fleet_plot, aes(x = year, y = catch_ton, fill = ctry)) +
-  geom_bar(stat = "identity") +
+
+ggplot(lan_fleet_plot, aes(x = as.character(year), y = catch_ton, fill = ctry)) +
+  geom_bar(stat = "identity", width = 1) +
     theme(legend.position="bottom", axis.text.x = element_text(angle = 90, vjust = 0.5)) + 
   scale_fill_manual(values = ddc.col, drop=FALSE) +
   facet_wrap(~paste(area, subFleet, sep = " - "), nrow = 1) +
-  labs(title = paste0("Landings per subFleet and area, ", min(lan_fleet_plot$year), "-", max(lan_fleet_plot$year)))
+  labs(title = paste0("Landings per subFleet and area, ", min(lan_fleet_plot$year), "-", max(lan_fleet_plot$year)),
+       x = "year")
 ```
 
 ## Row
@@ -213,14 +215,15 @@ Since 2022 we have not combined the Swerdish C & D fleet
 ### Landings per fleet
 
 ```{r, eval = T, fig.width = 7}
-lan_fleet_plot <- summarise(group_by(subset(canum_3, year == year_0), ctry, fleet, area, year), catch_ton = sum(catch_t, na.rm = T)/9)
+lan_fleet_plot <- summarise(group_by(subset(canum_3, year %in% c(year_0, year_a)), ctry, fleet, area, year), catch_ton = sum(catch_t, na.rm = T)/9)
 
-ggplot(lan_fleet_plot, aes(x = year, y = catch_ton, fill = ctry)) +
+ggplot(lan_fleet_plot, aes(x = as.character(year), y = catch_ton, fill = ctry)) +
   geom_bar(stat = "identity") +
     theme(legend.position="bottom", axis.text.x = element_text(angle = 90, vjust = 0.5)) + 
   scale_fill_manual(values = ddc.col, drop=FALSE) +
   facet_wrap(~paste(area, fleet, sep = " - "), nrow = 1) +
-  labs(title = paste0("Landings per fleet and area, ", min(lan_fleet_plot$year), "-", max(lan_fleet_plot$year)))
+  labs(title = paste0("Landings per fleet and area, ", min(lan_fleet_plot$year), "-", max(lan_fleet_plot$year)),
+       x = "year")
 ```
 
 ### Landings per fleet
