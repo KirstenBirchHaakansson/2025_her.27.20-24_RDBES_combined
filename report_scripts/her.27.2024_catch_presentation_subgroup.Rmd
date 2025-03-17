@@ -167,7 +167,7 @@ names(ddc.col)  <- ddc
 
 ```
 
-# Version `r paste0(lubridate::today(), "-v6")`
+# Version `r paste0(lubridate::today(), "-v7")`
 Row
 -----------------------------------------------------------------------
 ### Versions
@@ -184,9 +184,11 @@ Row
 
 2025-03-17-v6 - Updating the presentation layout
 
+2025-03-17-v7 - Adding plot for plenary presentation
+
 
 # Overall lan, fig
-Row {data-height=500}
+Row
 -----------------------------------------------------------------------
 ### A lot of new sub-fleets {.no-padding}
 ```{r, fig.width = 30}
@@ -241,14 +243,90 @@ ggplot(lan_fleet_plot, aes(x = year, y = catch_ton, fill = ctry)) +
   labs(title = paste0("Landings per fleet and area, ", min(lan_fleet_plot$year), "-", max(lan_fleet_plot$year)))
 ```
 
-# Overall lan & samp, tab
-## Tabulated landings and sampling, detaile
+# Overall lan, tab
+## Row
+### Total (ton)
+```{r}
+lan_sum <- summarise(group_by(canum_3, year), catch_ton = sum(catch_t, na.rm = T)/9)
+lan_sum_t <- tidyr::spread(lan_sum, key = year, value = catch_ton, fill = 0)
+
+knitr::kable(lan_sum_t)
+```
+
+## Row
+### Per country (ton)
+```{r}
+lan_sum <- summarise(group_by(canum_3, year, ctry), catch_ton = sum(catch_t, na.rm = T)/9)
+
+lan_sum_t <- tidyr::spread(lan_sum, key = year, value = catch_ton, fill = 0)
+
+knitr::kable(lan_sum_t)
+```
+
+## Row
+### Per fleet
+```{r}
+lan_sum <- summarise(group_by(canum_3, year, fleet), catch_ton = sum(catch_t, na.rm = T)/9)
+
+lan_sum_t <- tidyr::spread(lan_sum, key = year, value = catch_ton, fill = 0)
+
+knitr::kable(lan_sum_t)
+```
+
+## Row
+### Per area and fleet
+```{r}
+lan_sum <- summarise(group_by(canum_3, year, area, fleet), catch_ton = sum(catch_t, na.rm = T)/9)
+
+lan_sum_t <- tidyr::spread(lan_sum, key = year, value = catch_ton, fill = 0)
+
+knitr::kable(lan_sum_t)
+```
+
+# Overall lan & samp
+## Row
+### landings and sampling 27.3.a {.no-padding}
+
+```{r, echo = F}
+
+lan_samp <- distinct(subset(canum_3, year == year_0 & area %in% c("27.3.a.20", "27.3.a.21") & catch_t > 0), year, catch_t, subFleet, area, ctry, quarter, noSample)
+
+ggplot(lan_samp, aes(x = noSample, y = catch_t, col = ctry)) +
+  geom_point(size = 3) + 
+  geom_vline(xintercept = 3) +
+  facet_grid(area~subFleet) +
+  scale_color_manual(values = ddc.col) +
+  labs(title = paste0("Her.27.20-27. Landed tons per number of samples, ", year_0), x = "Number of sample", y = "Tons") + 
+  theme(legend.position="bottom")
+
+```
+
+## Row
+### landings and sampling 27.3.b, 27.3.c, 27.3.d.24 {.no-padding}
+
+```{r, echo = F}
+
+lan_samp <- distinct(subset(canum_3, year == year_0 & area %in% c("27.3.b.23", "27.3.c.22", "27.3.d.24") & catch_t > 0), year, catch_t, subFleet, area, ctry, quarter, noSample)
+
+ggplot(lan_samp, aes(x = noSample, y = catch_t, col = ctry)) +
+  geom_point(size = 3) + 
+  geom_vline(xintercept = 3) +
+  facet_grid(area~subFleet) +
+  scale_color_manual(values = ddc.col) +
+  labs(title = paste0("Her.27.20-27. Landed tons per number of samples, ", year_0), x = "Number of sample", y = "Tons") + 
+  theme(legend.position="bottom")
+
+```
+
+
+## Row
+### Tabulated landings and sampling, tabulated
 
 ```{r}
 samp_all <- distinct(subset(canum_3, catch_t > 0 & year == year_0), ctry, year, quarter, area, subFleet, catch_t, noSample, noLength, noAge)
 
 datatable(samp_all, filter = 'top', options = list(
-  pageLength = 25, autoWidth = F
+  pageLength = nrow(samp_all), autoWidth = F, scrollY = F
 ),
 class = 'cell-border stripe')
 ```
