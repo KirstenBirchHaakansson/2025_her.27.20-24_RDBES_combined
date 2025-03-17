@@ -3,6 +3,8 @@ title: "her.27.20-24 - catch data 2024"
 output: 
   flexdashboard::flex_dashboard:
     orientation: rows
+    vertical_layout: fill
+    horisontal_layout: fill
     theme: 
       primary: "#990000"
     source_code: embed
@@ -165,10 +167,9 @@ names(ddc.col)  <- ddc
 
 ```
 
-# Version `r paste0(lubridate::today(), "-v4")`
-
-## Row
-
+# Version `r paste0(lubridate::today(), "-v5")`
+Row
+-----------------------------------------------------------------------
 ### Versions
 
 2025-03-09-v1 - The presentation is mainly updated in relation to imputations in 27.3.a
@@ -179,12 +180,12 @@ names(ddc.col)  <- ddc
 
 2025-03-11-v4 - Included decision and results from area 22-24. The resulting imputations are coming from the output instead of the input file, which is a more correct check
 
+2025-03-11-v5 - Updated Polish data
+
 # Overall lan, fig
-
-## Row
-
-### A lot of new sub-fleets
-
+Row {data-height=500}
+-----------------------------------------------------------------------
+### A lot of new sub-fleets {.no-padding}
 ```{r, fig.width = 30}
 lan_fleet_plot <- summarise(group_by(subset(canum_3, year == year_0), ctry, subFleet, area, year), catch_ton = sum(catch_t, na.rm = T)/9)
 
@@ -198,9 +199,9 @@ ggplot(lan_fleet_plot, aes(x = as.character(year), y = catch_ton, fill = ctry)) 
        x = "year")
 ```
 
-## Row
-
-### Map sub-fleet to fleet
+Row {data-height=500}
+-----------------------------------------------------------------------
+### Map sub-fleet to fleet {.no-padding}
 
 Since 2022 we have not combined the Swerdish C & D fleet
 
@@ -212,8 +213,7 @@ Since 2022 we have not combined the Swerdish C & D fleet
 
 `canum$fleet[canum$area %in% c("27.3.c.22", "27.3.b.23", "27.3.d.24")] <- "F"`
 
-### Landings per fleet
-
+### Landings per fleet {.no-padding}
 ```{r, eval = T, fig.width = 7}
 lan_fleet_plot <- summarise(group_by(subset(canum_3, year %in% c(year_0, year_a)), ctry, fleet, area, year), catch_ton = sum(catch_t, na.rm = T)/9)
 
@@ -226,8 +226,7 @@ ggplot(lan_fleet_plot, aes(x = as.character(year), y = catch_ton, fill = ctry)) 
        x = "year")
 ```
 
-### Landings per fleet
-
+### Landings per fleet {.no-padding}
 ```{r, eval = T, fig.width = 10}
 lan_fleet_plot <- summarise(group_by(canum_3, ctry, fleet, area, year), catch_ton = sum(catch_t, na.rm = T)/9)
 
@@ -240,7 +239,6 @@ ggplot(lan_fleet_plot, aes(x = year, y = catch_ton, fill = ctry)) +
 ```
 
 # Overall lan & samp, tab
-
 ## Tabulated landings and sampling
 
 ```{r}

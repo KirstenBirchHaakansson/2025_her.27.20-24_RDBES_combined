@@ -30,6 +30,15 @@ draft.data(data.files = "submitted_data/PL_DC_Annex_HAWG3 her.27.20-24_PL_v2.xls
            file = T,
            append = T)
 
+draft.data(data.files = "submitted_data/DC_Annex_HAWG3 her.27.20-24_PL_rev_MA.xlsx",
+           data.scripts = NULL,
+           originator = "Data submitted to HAWGi",
+           title = "Updated Polish data from Poland",
+           period = "2024",
+           access = "Restricted",
+           file = T,
+           append = T)
+
 draft.data(data.files = "submitted_data/2025_DC_Annex_HAWG3 her.27.20-24_2024_GER.xlsx",
            data.scripts = NULL,
            originator = "Data submitted to HAWG",

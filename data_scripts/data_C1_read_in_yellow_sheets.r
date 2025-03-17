@@ -15,7 +15,7 @@ year <- 2024
 # File names 2024
 dnkFile <- "DC_Annex_HAWG3 her.27.20-24 template_DNK_2024.xlsx"
 gerFile <- "2025_DC_Annex_HAWG3 her.27.20-24_2024_GER.xlsx"
-polFile <- "PL_DC_Annex_HAWG3 her.27.20-24_PL_v2.xlsx"
+polFile <- "DC_Annex_HAWG3 her.27.20-24_PL_rev_MA.xlsx"
 sweFile <- "SE_2025 DC HAWG her.27.20-24 YellowSheet_v3.xlsx"
 norFile <- "DC_Annex_HAWG3 her.27.20-24_NOR2024_v4.xlsx"
 
