@@ -3,7 +3,7 @@ title: "her.27.20-24 - catch data 2024"
 output: 
   flexdashboard::flex_dashboard:
     orientation: rows
-    vertical_layout: fill
+    vertical_layout: scroll
     horisontal_layout: fill
     theme: 
       primary: "#990000"
@@ -167,7 +167,7 @@ names(ddc.col)  <- ddc
 
 ```
 
-# Version `r paste0(lubridate::today(), "-v5")`
+# Version `r paste0(lubridate::today(), "-v6")`
 Row
 -----------------------------------------------------------------------
 ### Versions
@@ -181,6 +181,9 @@ Row
 2025-03-11-v4 - Included decision and results from area 22-24. The resulting imputations are coming from the output instead of the input file, which is a more correct check
 
 2025-03-11-v5 - Updated Polish data
+
+2025-03-17-v6 - Updating the presentation layout
+
 
 # Overall lan, fig
 Row {data-height=500}
@@ -239,7 +242,7 @@ ggplot(lan_fleet_plot, aes(x = year, y = catch_ton, fill = ctry)) +
 ```
 
 # Overall lan & samp, tab
-## Tabulated landings and sampling
+## Tabulated landings and sampling, detaile
 
 ```{r}
 samp_all <- distinct(subset(canum_3, catch_t > 0 & year == year_0), ctry, year, quarter, area, subFleet, catch_t, noSample, noLength, noAge)
@@ -252,7 +255,7 @@ class = 'cell-border stripe')
 
 # Lan & samp, 27.3.a, p
 
-## Row
+## Row {data-height=500}
 
 ### Landings
 
@@ -280,40 +283,31 @@ canum_3a <- subset(canum_3, subFleet == "passive" & area %in% c("27.3.a.20", "27
 generate_presentation_plot(canum_3a, "mean_weight")
 ```
 
-## Row
-
+## Row {data-height=500}
 ### Samples, `r paste0(year_a, " - ", year_0)`
-
 ```{r}
 samp <- subset(canum_3, noSample > 0 & subFleet %in% c("passive") & area %in% c("27.3.a.20", "27.3.a.21", "27.3.b.23") & year %in% c(year_0, year_a))
 
 samp_1 <- distinct(samp, ctry, year, quarter, area, subFleet, noSample, noLength, noAge)
 
-datatable(samp_1, filter = 'top', options = list(
-  pageLength = 25, autoWidth = F
-),
-class = 'cell-border stripe')
+knitr::kable(samp_1, )
 ```
 
-### CANUM, relative, `r year_a` {.tabset}
-
+### CANUM, relative, `r year_a` 
 ```{r}
 canum_3a <- subset(canum_3, subFleet %in% c("passive") & area %in% c("27.3.a.20", "27.3.a.21", "27.3.b.23") & year == year_a)
 
 generate_presentation_plot(canum_3a, "relative age")
 ```
 
-### Mean weight at age, `r year_a` {.tabset}
-
+### Mean weight at age, `r year_a` 
 ```{r}
 canum_3a <- subset(canum_3, subFleet %in% c("passive") & area %in% c("27.3.a.20", "27.3.a.21", "27.3.b.23") & year == year_a)
 
 generate_presentation_plot(canum_3a, "mean_weight")
 ```
 
-# Lan & samp, 27.3.a, p, cont.
-
-## Row {data-height="50"}
+## Row
 
 ### Knowlegde & imputations
 
@@ -330,14 +324,14 @@ mis_1$comment <- as.factor(mis_1$comment)
 mis_1$comment1 <- as.factor(mis_1$comment1)
 
 datatable(mis_1, filter = 'top', options = list(
-  pageLength = 25, autoWidth = F
+  pageLength = nrow(mis_1), autoWidth = F, scrollY = F
 ),
 class = 'cell-border stripe')
 ```
 
 # Lan & samp, 27.3.a, ps
 
-## Row
+## Row {data-height=500}
 
 ### Landings
 
@@ -365,8 +359,7 @@ canum_3a <- subset(canum_3, subFleet == "purse seine" & area %in% c("27.3.a.20",
 generate_presentation_plot(canum_3a, "mean_weight")
 ```
 
-## Row
-
+## Row {data-height=500}
 ### Samples, `r paste0(year_a, " - ", year_0)`
 
 ```{r}
@@ -374,13 +367,9 @@ samp <- subset(canum_3, noSample > 0 & subFleet %in% c("purse seine") & area %in
 
 samp_1 <- distinct(samp, ctry, year, quarter, area, subFleet, noSample, noLength, noAge)
 
-datatable(samp_1, filter = 'top', options = list(
-  pageLength = 25, autoWidth = F
-),
-class = 'cell-border stripe')
+knitr::kable(samp_1)
 ```
-
-### CANUM, relative, `r year_a` {.tabset}
+### CANUM, relative, `r year_a`
 
 ```{r}
 canum_3a <- subset(canum_3, subFleet %in% c("purse seine") & area %in% c("27.3.a.20", "27.3.a.21") & year == year_a)
@@ -388,7 +377,7 @@ canum_3a <- subset(canum_3, subFleet %in% c("purse seine") & area %in% c("27.3.a
 generate_presentation_plot(canum_3a, "relative age")
 ```
 
-### Mean weight at age, `r year_a` {.tabset}
+### Mean weight at age, `r year_a`
 
 ```{r}
 canum_3a <- subset(canum_3, subFleet %in% c("purse seine") & area %in% c("27.3.a.20", "27.3.a.21") & year == year_a)
@@ -396,9 +385,7 @@ canum_3a <- subset(canum_3, subFleet %in% c("purse seine") & area %in% c("27.3.a
 generate_presentation_plot(canum_3a, "mean_weight")
 ```
 
-# Lan & samp, 27.3.a, ps, cont.
-
-## Row {data-height="150"}
+## Row
 
 ### Knowlegde & imputations
 
@@ -424,7 +411,7 @@ mis_1$comment <- as.factor(mis_1$comment)
 mis_1$comment1 <- as.factor(mis_1$comment1)
 
 datatable(mis_1, filter = 'top', options = list(
-  pageLength = 25, autoWidth = F
+  pageLength = 25, autoWidth = F, scrollY = F
 ),
 class = 'cell-border stripe')
 
@@ -432,7 +419,7 @@ class = 'cell-border stripe')
 
 # Lan & samp, 27.3.a, t\>32
 
-## Row
+## Row {data-height=500}
 
 ### Landings
 
@@ -460,7 +447,7 @@ canum_3a <- subset(canum_3, subFleet == "trawl >= 32mm" & area %in% c("27.3.a.20
 generate_presentation_plot(canum_3a, "mean_weight")
 ```
 
-## Row
+## Row {data-height=500}
 
 ### Samples, `r paste0(year_a, " - ", year_0)`
 
@@ -469,10 +456,7 @@ samp <- subset(canum_3, noSample > 0 & subFleet %in% c("trawl >= 32mm") & area %
 
 samp_1 <- distinct(samp, ctry, year, quarter, area, subFleet, noSample, noLength, noAge)
 
-datatable(samp_1, filter = 'top', options = list(
-  pageLength = 25, autoWidth = F
-),
-class = 'cell-border stripe')
+knitr::kable(samp_1)
 ```
 
 ### CANUM, relative, `r year_a` {.tabset}
@@ -491,9 +475,7 @@ canum_3a <- subset(canum_3, subFleet %in% c("trawl >= 32mm") & area %in% c("27.3
 generate_presentation_plot(canum_3a, "mean_weight")
 ```
 
-# Lan & samp, 27.3.a, t\>32, cont.
-
-## Row {data-height="100"}
+## Row 
 
 ### Knowlegde & imputations
 
@@ -511,14 +493,14 @@ mis_1$comment <- as.factor(mis_1$comment)
 mis_1$comment1 <- as.factor(mis_1$comment1)
 
 datatable(mis_1, filter = 'top', options = list(
-  pageLength = 25, autoWidth = F
+  pageLength = 25, autoWidth = F, scrollY = F
 ),
 class = 'cell-border stripe')
 ```
 
 # Lan & samp, 27.3.a, t\<32
 
-## Row
+## Row {data-height=500}
 
 ### Landings
 
@@ -546,7 +528,7 @@ canum_3a <- subset(canum_3, subFleet == "trawl < 32mm" & area %in% c("27.3.a.20"
 generate_presentation_plot(canum_3a, "mean_weight")
 ```
 
-## Row
+## Row {data-height=500}
 
 ### Samples, `r paste0(year_a, " - ", year_0)`
 
@@ -555,10 +537,7 @@ samp <- subset(canum_3, noSample > 0 & subFleet %in% c("trawl < 32mm") & area %i
 
 samp_1 <- distinct(samp, ctry, year, quarter, area, subFleet, noSample, noLength, noAge)
 
-datatable(samp_1, filter = 'top', options = list(
-  pageLength = 25, autoWidth = F
-),
-class = 'cell-border stripe')
+knitr::kable(samp_1)
 ```
 
 ### CANUM, relative, `r year_a` {.tabset}
@@ -577,9 +556,7 @@ canum_3a <- subset(canum_3, subFleet %in% c("trawl < 32mm") & area %in% c("27.3.
 generate_presentation_plot(canum_3a, "mean_weight")
 ```
 
-# Lan & samp, 27.3.a, t\<32, cont.
-
-## Row {data-height="100"}
+## Row
 
 ### Knowlegde & imputations
 
@@ -596,14 +573,14 @@ mis_1$comment <- as.factor(mis_1$comment)
 mis_1$comment1 <- as.factor(mis_1$comment1)
 
 datatable(mis_1, filter = 'top', options = list(
-  pageLength = 25, autoWidth = F
+  pageLength = 25, autoWidth = F, scrollY = F
 ),
 class = 'cell-border stripe')
 ```
 
 # Lan & samp, 27.3.bcd, p
 
-## Row
+## Row {data-height=500}
 
 ### Landings
 
@@ -640,10 +617,7 @@ samp <- subset(canum_3, noSample > 0 & subFleet == "passive" & area %in% c("27.3
 
 samp_1 <- distinct(samp, ctry, year, quarter, area, subFleet, noSample, noLength, noAge)
 
-datatable(samp_1, filter = 'top', options = list(
-  pageLength = 25, autoWidth = F
-),
-class = 'cell-border stripe')
+knitr::kable(samp_1)
 ```
 
 ### CANUM, relative, `r year_a` {.tabset}
@@ -662,10 +636,7 @@ canum_3a <- subset(canum_3, subFleet == "passive" & area %in% c("27.3.b.23", "27
 generate_presentation_plot(canum_3a, "mean_weight")
 ```
 
-# Lan & samp, 27.3.bcd, p, cont.
-
-## Row {data-height="150"}
-
+## Row 
 ### Knowlegde & imputations
 
 27.3.b.23: Use Swedish samples on Danish landings quarter per quarter? - Yes!
@@ -685,16 +656,14 @@ mis_1$comment <- as.factor(mis_1$comment)
 mis_1$comment1 <- as.factor(mis_1$comment1)
 
 datatable(mis_1, filter = 'top', options = list(
-  pageLength = 25, autoWidth = F
+  pageLength = 25, autoWidth = F, scrollY = F
 ),
 class = 'cell-border stripe')
 ```
 
-
-
 # Lan & samp, 27.3.bcd, a>32
 
-## Row
+## Row {data-height=500}
 
 ### Landings
 
@@ -722,7 +691,7 @@ canum_3a <- subset(canum_3, subFleet %in% c("active >= 32mm", "active < 32mm") &
 generate_presentation_plot(canum_3a, "mean_weight")
 ```
 
-## Row
+## Row {data-height=500}
 
 ### Samples, `r paste0(year_a, " - ", year_0)`
 
@@ -731,10 +700,7 @@ samp <- subset(canum_3, noSample > 0 & subFleet %in% c("active >= 32mm", "active
 
 samp_1 <- distinct(samp, ctry, year, quarter, area, subFleet, noSample, noLength, noAge)
 
-datatable(samp_1, filter = 'top', options = list(
-  pageLength = 25, autoWidth = F
-),
-class = 'cell-border stripe')
+knitr::kable(samp_1)
 ```
 
 ### CANUM, relative, `r year_a` {.tabset}
@@ -753,9 +719,7 @@ canum_3a <- subset(canum_3, subFleet %in% c("active >= 32mm", "active < 32mm") &
 generate_presentation_plot(canum_3a, "mean_weight")
 ```
 
-# Lan & samp, 27.3.bcd, a>32, cont.
-
-## Row {data-height="200"}
+## Row
 
 ### Knowlegde & imputations
 2024: A sample from the Polish sprat fishery. Use on all?
@@ -767,6 +731,8 @@ Conclusion: We use Q4, 2024 on Q4. Q3, 2023 on all other Q's.
 The age distributions in the F fleet in the past seems to change a lot over the years, but the fleets has also changed a lot, from a single F fleet to more disaggregated fleets, this makes it difficult to impute over years
 
 We need a better understanding of the fishery and possible samples from 27.3.d.25 when it come to Polish data. Hopefully the RDBES data will give some insight into fleets, samples and future imputations. Together with raw RDBES data it may be beneficial to re-submit yellow sheets / IC for the last couple of years for the benchmark, so we can make more informed decisions.
+
+**After the Polish update** - the landings in this fleet nearly disappeared
 
 ## Row
 
@@ -787,7 +753,7 @@ class = 'cell-border stripe')
 
 # Lan & samp, 27.3.bcd, a<32
 
-## Row
+## Row {data-height=500}
 
 ### Landings
 
@@ -815,7 +781,7 @@ canum_3a <- subset(canum_3, subFleet %in% c("active < 32mm") & area %in% c("27.3
 generate_presentation_plot(canum_3a, "mean_weight")
 ```
 
-## Row
+## Row {data-height=500}
 
 ### Samples, `r paste0(year_a, " - ", year_0)`
 
@@ -824,10 +790,7 @@ samp <- subset(canum_3, noSample > 0 & subFleet %in% c("active < 32mm") & area %
 
 samp_1 <- distinct(samp, ctry, year, quarter, area, subFleet, noSample, noLength, noAge)
 
-datatable(samp_1, filter = 'top', options = list(
-  pageLength = 25, autoWidth = F
-),
-class = 'cell-border stripe')
+knitr::kable(samp_1)
 ```
 
 ### CANUM, relative, `r year_a` {.tabset}
@@ -846,9 +809,7 @@ canum_3a <- subset(canum_3, subFleet %in% c("active < 32mm") & area %in% c("27.3
 generate_presentation_plot(canum_3a, "mean_weight")
 ```
 
-# Lan & samp, 27.3.bcd, a<32, cont.
-
-## Row {data-height="200"}
+## Row 
 
 ### Knowlegde & imputations
 2024: A sample from the Polish sprat fishery. Use on all?
@@ -872,7 +833,7 @@ mis_1$comment <- as.factor(mis_1$comment)
 mis_1$comment1 <- as.factor(mis_1$comment1)
 
 datatable(mis_1, filter = 'top', options = list(
-  pageLength = 25, autoWidth = F
+  pageLength = 25, autoWidth = F, scrollY = F
 ),
 class = 'cell-border stripe')
 ```
