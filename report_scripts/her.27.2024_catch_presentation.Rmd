@@ -154,7 +154,80 @@ mis$fleet <- as.factor(mis$fleet)
 mis$quarter <- as.factor(mis$quarter)
 mis$subFleet <- as.factor(mis$subFleet)
 mis$year <- as.numeric(mis$year)
-  
+
+splitted <- read.csv(paste(
+    "../data/",
+    "C7_wbss_multi_fleet_", year_0, ".csv",
+    sep = ""
+  ))
+
+splitted_a <- read.csv(paste(
+    "../boot/data/data_from_past_years/",
+    "C7_wbss_multi_fleet_", year_a, ".csv",
+    sep = ""
+  ))
+
+splitted_b <- read.csv(paste(
+    "../boot/data/data_from_past_years/",
+    "C7_wbss_multi_fleet_", year_b, ".csv",
+    sep = ""
+  ))
+
+splitted_c <- read.csv(paste(
+    "../boot/data/data_from_past_years/",
+    "C7_wbss_multi_fleet_", year_c, "_12-4_diff_ages.csv",
+    sep = ""
+  ))
+
+splitted_d <- read.csv(paste(
+    "../boot/data/data_from_past_years/",
+    "C7_wbss_multi_fleet_", year_d, ".csv",
+    sep = ""
+  ))
+
+splitted_wbss <- rbind(splitted, splitted_a, splitted_b, splitted_c, splitted_d)
+splitted_wbss$stock <- "WBSS" 
+
+splitted_wbss <- rename(splitted_wbss, "canum_1000" = "wbss_canum_1000", "caton" = "wbss_caton")
+
+splitted <- read.csv(paste(
+    "../data/",
+    "C7_nsas_input_fleet_", year_0, ".csv",
+    sep = ""
+  ))
+
+splitted_a <- read.csv(paste(
+    "../boot/data/data_from_past_years/",
+    "C7_nsas_input_fleet_", year_a, ".csv",
+    sep = ""
+  ))
+
+splitted_b <- read.csv(paste(
+    "../boot/data/data_from_past_years/",
+    "C7_nsas_input_fleet_", year_b, ".csv",
+    sep = ""
+  ))
+
+splitted_c <- read.csv(paste(
+    "../boot/data/data_from_past_years/",
+    "C7_nsas_input_fleet_", year_c, "_12-4_diff_ages.csv",
+    sep = ""
+  ))
+
+splitted_d <- read.csv(paste(
+    "../boot/data/data_from_past_years/",
+    "C7_nsas_input_fleet_", year_d, "_12-4.csv",
+    sep = ""
+  ))
+
+splitted_d$quarter <- 1
+
+splitted_nsas <- rbind(splitted, splitted_a, splitted_b, splitted_c, splitted_d)
+splitted_nsas$stock <- "NSAS"
+
+splitted_nsas <- rename(splitted_nsas, "canum_1000" = "nsas_canum_1000", "caton" = "nsas_caton")
+
+splitted <- rbind(select(splitted_nsas, -quarter), splitted_wbss)
 ```
 
 ```{r set_col, include = F}
@@ -167,7 +240,7 @@ names(ddc.col)  <- ddc
 
 ```
 
-# Version `r paste0(lubridate::today(), "-v7")`
+# Version `r paste0(lubridate::today(), "-v8")`
 
 ## Row
 
@@ -185,7 +258,9 @@ names(ddc.col)  <- ddc
 
 2025-03-17-v6 - Updating the presentation layout
 
-2025-03-17-v7 - Adding plot for plenary presentation
+2025-03-17-v7 - Adding plots for plenary presentation
+
+2025-03-17-v8 - Adding more plots for plenary presentation
 
 # Overall lan, fig
 
@@ -251,7 +326,7 @@ ggplot(lan_fleet_plot, aes(x = year, y = catch_ton, fill = ctry)) +
 
 ## Row
 
-### Total (ton)
+### Total cacth (ton)
 
 ```{r}
 lan_sum <- summarise(group_by(canum_3, year), catch_ton = sum(catch_t, na.rm = T)/9)
@@ -262,7 +337,7 @@ knitr::kable(lan_sum_t)
 
 ## Row
 
-### Per country (ton)
+### Catch per country (ton)
 
 ```{r}
 lan_sum <- summarise(group_by(canum_3, year, ctry), catch_ton = sum(catch_t, na.rm = T)/9)
@@ -274,7 +349,7 @@ knitr::kable(lan_sum_t)
 
 ## Row
 
-### Per fleet
+### Catch per fleet (ton)
 
 ```{r}
 lan_sum <- summarise(group_by(canum_3, year, fleet), catch_ton = sum(catch_t, na.rm = T)/9)
@@ -285,11 +360,20 @@ knitr::kable(lan_sum_t)
 ```
 
 ## Row
-
-### Per area and fleet
+### Catch per area and fleet (ton)
 
 ```{r}
 lan_sum <- summarise(group_by(canum_3, year, area, fleet), catch_ton = sum(catch_t, na.rm = T)/9)
+
+lan_sum_t <- tidyr::spread(lan_sum, key = year, value = catch_ton, fill = 0)
+
+knitr::kable(lan_sum_t)
+```
+## Row
+### Catch per area, fleet, quarter (ton)
+
+```{r}
+lan_sum <- summarise(group_by(canum_3, year, area, fleet, quarter), catch_ton = sum(catch_t, na.rm = T)/9)
 
 lan_sum_t <- tidyr::spread(lan_sum, key = year, value = catch_ton, fill = 0)
 
@@ -299,7 +383,12 @@ knitr::kable(lan_sum_t)
 # Overall lan & samp
 
 ## Row
+### Summary
+We have a lot of unsampled strata and strata with very few samples, e.g., in 27.3.a.20 we started with one sample (the 3 Norwegian samples from the ps are from the transfer area)
 
+So a lot of borrowing ..... samples from the tranfer area and 2023
+
+## Row
 ### landings and sampling 27.3.a {.no-padding}
 
 ```{r, echo = F}
@@ -314,6 +403,19 @@ ggplot(lan_samp, aes(x = noSample, y = catch_t, col = ctry)) +
   labs(title = paste0("Her.27.20-27. Landed tons per number of samples, ", year_0), x = "Number of sample", y = "Tons") + 
   theme(legend.position="bottom")
 
+```
+
+<!-- ## Row -->
+<!-- ### landings and sampling 27.3.a, tab {.no-padding} -->
+
+```{r, echo = F, eval = F}
+
+lan_samp <- distinct(subset(canum_3, year == year_0 & area %in% c("27.3.a.20", "27.3.a.21") & catch_t > 0), year, catch_t, subFleet, area, ctry, quarter, noSample)
+
+
+lan_samp_sum <- summarise(group_by(lan_samp, year, area, quarter, subFleet), catch_t = sum(catch_t), 
+                          noSamples = sum(noSample))
+knitr::kable(lan_samp_sum)
 ```
 
 ## Row
@@ -386,7 +488,7 @@ samp <- subset(canum_3, noSample > 0 & subFleet %in% c("passive") & area %in% c(
 
 samp_1 <- distinct(samp, ctry, year, quarter, area, subFleet, noSample, noLength, noAge)
 
-knitr::kable(samp_1, )
+knitr::kable(samp_1)
 ```
 
 ### CANUM, relative, `r year_a`
@@ -941,6 +1043,84 @@ class = 'cell-border stripe')
 ```
 
 # Split
+## Row
+### WBSS (ton)
+```{r}
+wbss_ton <- summarise(group_by(subset(splitted, stock == "WBSS"), year, fleet), caton = sum(caton, na.rm = T))
+
+ggplot(wbss_ton, aes(
+  x = year,
+  y = caton,
+  fill = fleet
+)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  scale_fill_manual(values = brewer.pal(5, "Dark2")[c(1:2, 4:5)], drop = FALSE) +
+  labs(title = "Landings of WBSS (tons) per year and fleet") +
+  theme(legend.position = "bottom",
+        axis.text.x = element_text(angle = 90, vjust = 0.5))
+
+```
+
+### WBSS (number)
+```{r}
+wbss_no <- summarise(group_by(subset(splitted, stock == "WBSS"), year, fleet), number = sum(canum_1000/1000, na.rm = T))
+
+ggplot(wbss_no, aes(
+  x = year,
+  y = number,
+  fill = fleet
+)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  scale_fill_manual(values = brewer.pal(4, "Dark2"), drop = FALSE) +
+  labs(title = "Landings of WBSS (number, mill.) per year and fleet") +
+  theme(legend.position = "bottom",
+        axis.text.x = element_text(angle = 90, vjust = 0.5))
+```
+
+## Row
+### Catch per fleet (ton)
+```{r}
+lan_sum <- summarise(group_by(canum_3, year, fleet), catch_ton = sum(catch_t, na.rm = T)/9)
+
+lan_sum_t <- tidyr::spread(lan_sum, key = year, value = catch_ton, fill = 0)
+
+knitr::kable(lan_sum_t)
+```
+
+## Row
+### Catch per stock and fleet (ton)
+```{r}
+
+lan_sum <- summarise(group_by(splitted, year, fleet, stock), caton = sum(caton, na.rm = T))
+
+lan_sum_t <- tidyr::spread(lan_sum, key = year, value = caton, fill = 0)
+
+knitr::kable(lan_sum_t)
+```
+
+
+<!-- ## Row -->
+<!-- ### Split proportions from Florian -->
+```{r, eval = F}
+split <-
+  read.table(
+    paste(
+      "../boot/data/split_data/",
+      "cmoe_split_",
+      year_0,
+      "_SD20SD21_v2.csv",
+      sep = ""
+    ),
+    sep = ",",
+    header = T
+  )
+
+split <- select(split, year, area, quarter, wr, nsas, wbss, n)
+split$area <- ifelse(split$area == "20", "27.3.a.20", "27.3.a.21")
+
+knitr::kable(split)
+```
+
 
 # Numbers and weights
 
