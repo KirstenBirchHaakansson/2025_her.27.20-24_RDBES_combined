@@ -188,7 +188,7 @@ ggplot(w5, aes(year, value, fill=wr)) +
 
 ## Selection commercial per fleet
 
-```{r Selection commercial per fleet, eval = F}
+```{r Selection commercial per fleet, eval = T}
 fleets <- attr(fit$data,"fleetNames")[1:4]<-paste0("Fleet ", c("A","C","D","F"))
 
 faa <- NULL
@@ -196,7 +196,7 @@ for(i in 1:4){
 tmp <- faytable(fit,fleet=i)
 tmp <- data.frame(year=as.numeric(rownames(tmp)),tmp)
 tmp <- tmp %>% gather("age","val",-1) %>% mutate(age=substring(age,2,3))
-tmp$grp <- cut(tmp$year,breaks=(4), include.lowest=T, right=T)
+tmp$grp <- cut(tmp$year,breaks=(6), include.lowest=T, right=T)
 tmp$fleet <- fleets[i]
 faa <- rbind(faa,tmp)
 }
@@ -208,6 +208,30 @@ grp$csum <- ave(grp$value, grp$grp, FUN=cumsum)
 faa<-merge(faa, grp)
 
 ggplot(faa, aes(age,val,group=year)) + geom_line(aes(colour = csum)) + facet_grid(fleet~grp, scales="free_y") + labs(y="Catchability", x="wr") + scale_colour_gradientn(colours = viridis(7), name="Order")
+```
+
+```{r Selection commercial per fleet 2020 2024, eval = T}
+fleets <- attr(fit$data,"fleetNames")[1:4]<-paste0("Fleet ", c("A","C","D","F"))
+
+faa <- NULL
+for(i in 1:4){
+tmp <- faytable(fit,fleet=i)
+tmp <- data.frame(year=as.numeric(rownames(tmp)),tmp)
+tmp <- tmp %>% gather("age","val",-1) %>% mutate(age=substring(age,2,3))
+tmp$grp <- cut(tmp$year,breaks=(5), include.lowest=T, right=T)
+tmp$fleet <- fleets[i]
+faa <- rbind(faa,tmp)
+}
+
+grp<-distinct(faa, grp, year)
+grp$value<-1
+grp$csum <- ave(grp$value, grp$grp, FUN=cumsum)
+
+faa<-merge(faa, grp)
+
+faa_1 <- subset(faa, year >= 2018)
+
+ggplot(faa_1, aes(age,val,group=year)) + geom_line(aes(colour = csum)) + facet_grid(fleet~grp, scales="free_y") + labs(y="Catchability", x="wr") + scale_colour_gradientn(colours = viridis(7), name="Order")
 ```
 
 ## Estimated cohort
