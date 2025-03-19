@@ -3,8 +3,8 @@ library(dplyr)
 library(knitr)
 library(readxl)
 
-year_last <- 2022
-year_to_update <- c(2023)
+year_last <- 2023
+year_to_update <- c(2024)
 
 dat_old <- read.csv(paste0("boot/data/time_series/", "nsas_canum_weca_sop_year_1993_", year_last, ".csv"))
 
