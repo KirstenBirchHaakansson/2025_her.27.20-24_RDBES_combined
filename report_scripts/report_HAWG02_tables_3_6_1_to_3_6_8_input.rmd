@@ -19,7 +19,7 @@ output:
 # devtools::install_github("fishfollower/SAM/stockassessment", ref="multi")
 
 path_root <-
-  "C:/Users/kibi/OneDrive - Danmarks Tekniske Universitet/SC_work/her.27.20-24/2024_her.27.20-24_RDBES_combined/"
+  "C:/Users/kibi/OneDrive - Danmarks Tekniske Universitet/stock_coord_work/her.27.20-24/2025_her.27.20-24_RDBES_combined/"
 
 # path_root <-
 #   "Q:/mynd/kibi/SC_work/her.27.20-24/2024_her.27.20-24_RDBES_combined/"
