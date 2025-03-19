@@ -7,7 +7,7 @@ always_allow_html: true
 
 ```{r setup, include=FALSE}
 path_root <-
-  "C:/Users/kibi/OneDrive - Danmarks Tekniske Universitet/SC_work/her.27.20-24/2024_her.27.20-24_RDBES_combined/"
+  "C:/Users/kibi/OneDrive - Danmarks Tekniske Universitet/stock_coord_work/her.27.20-24/2025_her.27.20-24_RDBES_combined/"
 
 # path_root <-
 #   "Q:/mynd/kibi/SC_work/her.27.20-24/2024_her.27.20-24_RDBES_combined/"
@@ -25,7 +25,7 @@ library(readxl)
 
 options(scipen = 9999)
 
-year_data <- 2023
+year_data <- 2024
 ```
 
 ```{r t_3_1_1, ft.align="left"}
