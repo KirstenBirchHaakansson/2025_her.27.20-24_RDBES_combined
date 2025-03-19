@@ -4,7 +4,7 @@ library(dplyr)
 library(knitr)
 
 year_to_update <- c(2024) # only works with a single year
-year_last <- 2023
+year_last <- 2023 #The end year of the time series to update
 
 # Old data ----
 
@@ -50,7 +50,8 @@ kable(summarise(group_by(dat_new_1, year), catch_1000t = sum(catch_t/1000, na.rm
 
 unique(dat_old_1$area)
 unique(dat_new_1$area)
-dat_new_1$area[dat_new_1$area %in% c("27.3.c.22", "27.3.d.24")] <- "27.3.c.22, 27.3.d.24"
+
+dat_new_1$area[dat_new_1$area %in% c("27.3.c.22", "27.3.d.24")] <- "27.3.c.22 & 27.3.d.24"
 
 
 unique(dat_new_1$area)
