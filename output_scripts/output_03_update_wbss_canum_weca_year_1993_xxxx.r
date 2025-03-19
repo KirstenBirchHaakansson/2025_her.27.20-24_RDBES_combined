@@ -4,8 +4,8 @@ library(dplyr)
 library(knitr)
 library(readxl)
 
-year_last <- 2022
-year_to_update <- c(2023) # only works with a single year
+year_last <- 2023
+year_to_update <- c(2024) # only works with a single year
 
 # Old data
 
