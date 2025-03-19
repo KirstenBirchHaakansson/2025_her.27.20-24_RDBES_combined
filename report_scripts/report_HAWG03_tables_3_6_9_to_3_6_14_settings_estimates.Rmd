@@ -21,7 +21,7 @@ output:
 #   "C:/Users/kibi/OneDrive - Danmarks Tekniske Universitet/SC_work/her.27.20-24/2024_her.27.20-24_RDBES_combined/"
 
 path_root <-
-  "Q:/mynd/kibi/SC_work/her.27.20-24/2024_her.27.20-24_RDBES_combined/"
+  "C:/Users/kibi/OneDrive - Danmarks Tekniske Universitet/stock_coord_work/her.27.20-24/2025_her.27.20-24_RDBES_combined/"
 
 knitr::opts_knit$set(root.dir = path_root)
 
@@ -38,9 +38,9 @@ load(paste0(path_root, "boot/data/download_from_stockassessment_org_multi_fleet/
 
 #Multi fleet
 dir_dat <-
-  "https://www.stockassessment.org/datadisk/stockassessment/userdirs/user278/WBSS_HAWG_2024/data/" #input data directly from www.stockassessment.org
+  "https://www.stockassessment.org/datadisk/stockassessment/userdirs/user278/WBSS_HAWG_2025/data/" #input data directly from www.stockassessment.org
 dir_fig <-
-  "https://www.stockassessment.org/datadisk/stockassessment/userdirs/user278/WBSS_HAWG_2024/res/" #tables directly from www.stockassessment.org
+  "https://www.stockassessment.org/datadisk/stockassessment/userdirs/user278/WBSS_HAWG_2025/res/" #tables directly from www.stockassessment.org
 fig_prefix <-
   "xxx-00-00.00.00_" #Prefix for figures at www.stockassessment.org
 
