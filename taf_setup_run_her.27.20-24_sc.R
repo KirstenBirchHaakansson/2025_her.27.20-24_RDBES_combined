@@ -133,14 +133,14 @@ draft.data(data.files = "split_data",
            title = "Split data",
            file = T,
            append = T)
-# 
-# draft.data(data.files = "time_series",
-#            data.scripts = NULL,
-#            originator = "Former HAWGs",
-#            title = "Time series from last year",
-#            file = T,
-#            append = T)
-# 
+
+draft.data(data.files = "time_series",
+           data.scripts = NULL,
+           originator = "Former HAWGs",
+           title = "Time series from last year",
+           file = T,
+           append = T)
+
 # draft.data(data.files = "data_from_tomas",
 #            data.scripts = NULL,
 #            originator = "Data from Tomas (former SC)",
