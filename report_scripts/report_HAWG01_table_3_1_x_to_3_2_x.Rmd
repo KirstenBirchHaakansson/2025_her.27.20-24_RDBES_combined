@@ -83,7 +83,7 @@ dat_1_t$year <- as.character(dat_1_t$year)
 
 set_flextable_defaults(
   font.family = "Calibri",
-  font.size = 7.5,
+  font.size = 7,
   padding.bottom = 0,
   padding.top = 0
 )
@@ -404,13 +404,13 @@ dat_322 <-
   subset(
     impu,
     area %in% c("27.3.a.20") &
-      ctry %in% c("Denmark", "Faroe Islands", "Germany", "Norway", "Sweden") |
+      ctry %in% c("Denmark", "Faroe Islands", "Germany", "Norway", "Sweden") & comment2 != "No landings" |
       area %in% c("27.3.a.21") &
-      ctry %in% c("Denmark", "Germany", "Sweden") |
+      ctry %in% c("Denmark", "Germany", "Sweden") & comment2 != "No landings" |
       area %in% c("27.3.c.22", "27.3.d.24") &
-      ctry %in% c("Denmark", "Germany", "Poland", "Sweden", "Finland") |
+      ctry %in% c("Denmark", "Germany", "Poland", "Sweden", "Finland") & comment2 != "No landings" |
       area %in% c("27.3.b.23")  &
-      ctry %in% c("Denmark", "Sweden")
+      ctry %in% c("Denmark", "Sweden") & comment2 != "No landings"
   )
 
 dat_322 <-
@@ -512,7 +512,7 @@ data_323_t <- arrange(data_323_t, type, year, area, fleet, quarter)
 
 set_flextable_defaults(
   font.family = "Calibri",
-  font.size = 7.5,
+  font.size = 6.5,
   padding.bottom = 0,
   padding.top = 0
 )
@@ -553,7 +553,7 @@ data_324_all_t <- spread(data_324_all, key = wr, value = prop)
 
 set_flextable_defaults(
   font.family = "Calibri",
-  font.size = 7.5,
+  font.size = 7,
   padding.bottom = 0,
   padding.top = 0
 )
@@ -633,7 +633,7 @@ data_325_t <- arrange(data_325_t, type, year, area, fleet, quarter)
 
 set_flextable_defaults(
   font.family = "Calibri",
-  font.size = 7.5,
+  font.size = 6.5,
   padding.bottom = 0,
   padding.top = 0
 )
@@ -728,7 +728,7 @@ data_326_t <- arrange(data_326_t, type, year, area, fleet, quarter)
 
 set_flextable_defaults(
   font.family = "Calibri",
-  font.size = 7.5,
+  font.size = 6,
   padding.bottom = 0,
   padding.top = 0
 )
@@ -807,7 +807,7 @@ data_327_t <- arrange(data_327_t, type, year, area)
 
 set_flextable_defaults(
   font.family = "Calibri",
-  font.size = 7,
+  font.size = 5.5,
   padding.bottom = 0,
   padding.top = 0
 )
@@ -886,7 +886,7 @@ data_328_t <- arrange(data_328_t, type, year, area)
 
 set_flextable_defaults(
   font.family = "Calibri",
-  font.size = 7,
+  font.size = 6.5,
   padding.bottom = 0,
   padding.top = 0
 )
