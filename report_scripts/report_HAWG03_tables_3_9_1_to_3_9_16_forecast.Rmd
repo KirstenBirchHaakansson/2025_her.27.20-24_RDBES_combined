@@ -19,10 +19,7 @@ output:
 # devtools::install_github("fishfollower/SAM/stockassessment", ref="multi")
 
 path_root <-
-  "C:/Users/kibi/OneDrive - Danmarks Tekniske Universitet/SC_work/her.27.20-24/2024_her.27.20-24_RDBES_combined/"
-
-# path_root <-
-#   "Q:/mynd/kibi/SC_work/her.27.20-24/2024_her.27.20-24_RDBES_combined/"
+  "C:/Users/kibi/OneDrive - Danmarks Tekniske Universitet/stock_coord_work/her.27.20-24/2025_her.27.20-24_RDBES_combined/"
 
 knitr::opts_knit$set(root.dir = path_root)
 
@@ -38,8 +35,8 @@ library(flextable)
 options(scipen=999)
 
 #Multi fleet 
-dir_dat<-"https://www.stockassessment.org/datadisk/stockassessment/userdirs/user278/WBSS_HAWG_2024/data/" #input data directly from www.stockassessment.org
-dir_fig<-"https://www.stockassessment.org/datadisk/stockassessment/userdirs/user278/WBSS_HAWG_2024/res/" #tables directly from www.stockassessment.org
+dir_dat<-"https://www.stockassessment.org/datadisk/stockassessment/userdirs/user278/WBSS_HAWG_2025/data/" #input data directly from www.stockassessment.org
+dir_fig<-"https://www.stockassessment.org/datadisk/stockassessment/userdirs/user278/WBSS_HAWG_2025/res/" #tables directly from www.stockassessment.org
 fig_prefix<-"xxx-00-00.00.00_" #Prefix for figures at www.stockassessment.org
 
 panderOptions("table.style", "rmarkdown")
@@ -507,7 +504,7 @@ t <- flextable(t37.2) %>%
   border_inner_h(part = "all") %>%
   set_caption(
     caption = paste0(
-      "TABLE 3.9.8 - WESTERN BALTIC SPRING SPAWNING HERRING. Multi fleet. Forecast table. F=F2024=0.036"
+      "TABLE 3.9.8 - WESTERN BALTIC SPRING SPAWNING HERRING. Multi fleet. Forecast table. F=F2025=0.045"
     ),
     style = "Table Caption"
   ) %>%
@@ -1057,7 +1054,7 @@ t <- flextable(t37.2) %>%
   border_inner_h(part = "all") %>%
   set_caption(
     caption = paste0(
-      "TABLE 3.9.16 - WESTERN BALTIC SPRING SPAWNING HERRING. Multi fleet. Forecast table. Constant 2024 TAC"
+      "TABLE 3.9.16 - WESTERN BALTIC SPRING SPAWNING HERRING. Multi fleet. Forecast table. Constant 2025 TAC"
     ),
     style = "Table Caption"
   ) %>%
