@@ -241,7 +241,7 @@ t2
 canumF <-
   readRDS(paste(
     "data/",
-    "C5_her2024_canum_with_imputations_",
+    "C5_her2024_canum_with_imputations_subfleets_",
     year_data,
     ".rds",
     sep = ""
@@ -300,20 +300,20 @@ canumF1 <-
 
 data_321 <-
   aggregate(
-    cbind((round(caton_t, digits = 1))) ~ year + area + quarter + ctry + noSamples +
-      noLength + noAge + fleet,
+    cbind(caton_t) ~ year + area + quarter + ctry + noSamples +
+      noLength + noAge + fleet + subFleet,
     data = canumF1,
     FUN = sum
   )
-data_321 <- rename(data_321, "SOP_1000t" = V1, "noSample" = noSamples)
+data_321 <- rename(data_321, "SOP_1000t" = caton_t, "noSample" = noSamples)
 data_321 <-
   aggregate(
     cbind(SOP_1000t, noSample, noLength, noAge) ~ year + area + quarter + ctry +
-      fleet,
+      fleet + subFleet,
     data = data_321,
     FUN = sum
   )
-data_321 <- arrange(data_321, year, area, fleet, ctry, quarter)
+data_321 <- arrange(data_321, year, area, fleet, subFleet, ctry, quarter)
 
 data_321_total <-
   mutate(
@@ -327,20 +327,26 @@ data_321_total <-
     area = "Total",
     quarter = "Total",
     ctry = "Total",
-    fleet = "Total"
+    fleet = "Total",
+    subFleet = "Total"
   )
 
 data_321_done <- rbind(data_321, data_321_total)
+
+
+data_321_done$SOP_1000t <- round(data_321_done$SOP_1000t, digits = 1)
 
 data_321_done <-
   rename(
     data_321_done,
     country = ctry,
+    `sub-fleet` = subFleet,
     `catch (t)` = SOP_1000t,
     `number of samples` = noSample,
     `number of fish measured` = noLength,
     `number of fish aged` = noAge
   )
+
 
 data_321_done$`number of samples`[data_321_done$`number of samples` == 0] <-
   NA
@@ -351,7 +357,7 @@ data_321_done$`number of fish aged`[data_321_done$`number of fish aged` == 0] <-
 
 set_flextable_defaults(
   font.family = "Calibri",
-  font.size = 7.5,
+  font.size = 6,
   padding.bottom = 0,
   padding.top = 0
 )
@@ -366,7 +372,7 @@ t3 <- flextable(data_321_done) %>%
   border_inner_h(part = "all") %>%
   set_caption(
     caption = paste0(
-      "Table 3.2.1 WESTERN BALTIC HERRING. Both WBSS and NSAS. Samples of commercial catch available to the Working Group by area, quarter, country and fleet for ",
+      "Table 3.2.1 WESTERN BALTIC HERRING. Both WBSS and NSAS. Samples of commercial catch available to the Working Group by area, quarter, country, fleet and sub-fleet for ",
       year_data
     ),
     style = "Table Caption"
@@ -423,7 +429,8 @@ dat_322 <- arrange(dat_322, year, area, ctry, subFleet, quarter)
 dat_322 <-
   select(dat_322, year, area, quarter, ctry, subFleet, catch_t, comment2)
 
-dat_322 <- rename(dat_322, fleet = subFleet, sampling = comment2)
+dat_322 <- rename(dat_322, sampling = comment2, 
+    `sub-fleet` = subFleet)
 
 dat_322 <- rename(dat_322, `catch (t)` = catch_t)
 
@@ -444,7 +451,7 @@ t4 <- flextable(dat_322) %>%
   border_inner_h(part = "all") %>%
   set_caption(
     caption = paste0(
-      "Table 3.2.2 WESTERN BALTIC HERRING. Both WBSS and NSAS. Samples of commercial catch by quarter, fleet and area for ",
+      "Table 3.2.2 WESTERN BALTIC HERRING. Both WBSS and NSAS. Samples of commercial catch by quarter, sub-fleet and area for ",
       year_data,
       " used to estimate catch in numbers and mean weight at age as W-ringers for ",
       year_data
