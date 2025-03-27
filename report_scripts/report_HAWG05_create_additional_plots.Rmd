@@ -40,7 +40,7 @@ source("../report_scripts/ggplot_AgeDistStk.R")
 
 load("../boot/data/download_from_stockassessment_org_multi_fleet/model.RData")
 
-# catch.dat <- read.csv("../boot/data/Herring_TAC_catches_by_area.csv", sep = ";")
+ catch.dat <- read.csv("../boot/data/tac_catchs_table_for_fig/Herring_TAC_catches_by_area.csv", sep = ";")
 
 
 knitr::opts_chunk$set(
@@ -55,7 +55,7 @@ knitr::opts_chunk$set(
 
 ```
 
-```{r GerAS N20, eval = F}
+```{r GerAS N20, eval = T}
 #Not that nice code - sorry
 sur<-read.ices(paste(dir_data_input,"survey.dat", sep=""))
 
@@ -114,7 +114,7 @@ ggplot(sw2, aes(year, weca, colour=as.character(wr)))+
 ```
 
 ## F at age in catch
-```{r f at age, eval = F}
+```{r f at age, eval = T}
 f1 <- faytable(fit,fleet=1)
 f2 <- faytable(fit,fleet=2)
 f3 <- faytable(fit,fleet=3)
@@ -210,7 +210,7 @@ faa<-merge(faa, grp)
 ggplot(faa, aes(age,val,group=year)) + geom_line(aes(colour = csum)) + facet_grid(fleet~grp, scales="free_y") + labs(y="Catchability", x="wr") + scale_colour_gradientn(colours = viridis(7), name="Order")
 ```
 
-```{r Selection commercial per fleet 2020 2024, eval = T}
+```{r Selection commercial per fleet 2020 2024, eval = F}
 fleets <- attr(fit$data,"fleetNames")[1:4]<-paste0("Fleet ", c("A","C","D","F"))
 
 faa <- NULL
@@ -236,12 +236,12 @@ ggplot(faa_1, aes(age,val,group=year)) + geom_line(aes(colour = csum)) + facet_g
 
 ## Estimated cohort
 
-```{r Estimated cohort, fig.height=7, eval = F}
+```{r Estimated cohort, fig.height=7, eval = T}
 ggAgeDistStk2(fit)
 ```
 
 # TAC and catch
-```{r, eval = F}
+```{r, eval = T}
 
 png(filename = "report_scripts/TAC_catch.png", width = 18, height = 20, res = 300, units = "cm", pointsize = 15)
 
