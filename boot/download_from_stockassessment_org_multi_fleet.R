@@ -53,3 +53,20 @@ filestoget <- c(
   lapply(filestoget, function(f)
     download.file(paste(url, f, sep = ""), f))
 
+  
+# Download png's
+  url <-
+    paste(
+      "https://www.stockassessment.org/datadisk/stockassessment/userdirs/user",
+      user,
+      "/",
+      SAOAssessment,
+      "/res/",
+      sep = ""
+    )
+  
+  filestoget <- c("big_xxx-00-00.00.00_001.png")
+
+  lapply(filestoget, function(f)
+    download.file(paste(url, f, sep = ""), f))
+  
