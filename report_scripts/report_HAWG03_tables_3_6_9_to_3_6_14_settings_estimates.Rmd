@@ -34,6 +34,8 @@ library(rvest)
 
 options(scipen = 999, digits = 1)
 
+name <- "WBSS_HAWG_2025"
+
 load(paste0(path_root, "boot/data/download_from_stockassessment_org_multi_fleet/model.RData"))
 
 #Multi fleet
@@ -63,7 +65,7 @@ set_flextable_defaults(
 
 ```{r, echo=F, warning=F}
 
-x <- "copy directly from SAM  | last year"
+x <- readLines(url(paste0("https://www.stockassessment.org/datadisk/stockassessment/userdirs/user3/", name, "/run/ver")))
 
 dat <- as.data.frame(x)
 
@@ -91,7 +93,7 @@ t
 
 ```{r, echo=F, warning=F}
 
-x <- "copy directly from SAM | last year"
+x <- readLines(url(paste0("https://www.stockassessment.org/datadisk/stockassessment/userdirs/user3/", name, "/conf/model.cfg")))
 
 dat <- as.data.frame(x)
 
