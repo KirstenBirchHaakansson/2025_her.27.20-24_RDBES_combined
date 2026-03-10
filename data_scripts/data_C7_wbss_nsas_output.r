@@ -5,102 +5,33 @@ library(dplyr)
 library(tidyr)
 library(readxl)
 
-path_model_input <- "./boot/data/download_from_stockassessment_org_multi_fleet/"
-path_trans_split <- "./boot/data/updated_split_data/"
-path_data <- "./data/"
+year_0 <- 2024
 
-# Read in model for fleet A
-# Model ----
-cn <- c()
+#Read-in
 
-for (i in c("A", "C", "D", "F")) {
-  cn_0 <- read.csv(paste0(path_model_input, "cn_", i, ".dat"),
-                   sep = "",
-                   header = F)
-  year_min <- as.numeric(cn_0[3, 1])
-  year_max <- as.numeric(cn_0[3, 2])
-  cn_0_dat <- cn_0[c(6:((year_max - year_min) + 6)), c(1:9)]
-  names(cn_0_dat) <- c("wr0", "wr1", "wr2", "wr3", "wr4", "wr5", "wr6", "wr7", "wr8+")
-  cn_0_dat$year <- c(year_min:year_max)
-  cn_0_dat$fleet <- i
-  
-  cn <- rbind(cn, cn_0_dat)
-  
-}
+canum3 <-
+  readRDS(paste("data/", "C6_her2024_canum_wbss_nsas_", year_0, ".rds", sep =
+                  ""))
+canum3$weca_kg <- canum3$weca_g / 1000
 
-cn_t <- tidyr::gather(cn, key = "wr", value = "canum_1000", -year, -fleet)
-cn_t$wr <- gsub("wr", "", cn_t$wr)
-cn_t$canum_1000 <- as.numeric(cn_t$canum_1000)
-cn_t$stock <- "wbss"
+canum4 <-
+  read_excel(
+    paste(
+      "boot/data/split_data/",
+      "Her21-IVaE_transfer_only_split_",
+      year_0,
+      ".xlsx",
+      sep = ""
+    ),
+    sheet = 3
+  )
 
-cw <- c()
+canum4 <- rename(canum4, wbss_canum_1000 = canum_000)
+canum4$weca_g <- canum4$weca_kg * 1000
+canum4$fleet <- "A"
+canum4$wr <- ifelse(canum4$wr %in% c("8", "9"), "8+", canum4$wr)
 
-for (i in c("A", "C", "D", "F")) {
-  cw_0 <- read.csv(paste0(path_model_input, "cw_", i, ".dat"),
-                   sep = "",
-                   header = F)
-  year_min <- as.numeric(cw_0[3, 1])
-  year_max <- as.numeric(cw_0[3, 2])
-  cw_0_dat <- cw_0[c(6:((year_max - year_min) + 6)), c(1:9)]
-  names(cw_0_dat) <- c("wr0", "wr1", "wr2", "wr3", "wr4", "wr5", "wr6", "wr7", "wr8+")
-  cw_0_dat$year <- c(year_min:year_max)
-  cw_0_dat$fleet <- i
-  
-  cw <- rbind(cw, cw_0_dat)
-  
-}
-
-cw_t <- tidyr::gather(cw, key = "wr", value = "weca_kg", -year, -fleet)
-cw_t$wr <- gsub("wr", "", cw_t$wr)
-cw_t$weca_kg <- as.numeric(cw_t$weca_kg)
-cw_t$weca_g <- cw_t$weca_kg * 1000
-cw_t$stock <- "wbss"
-
-model <- full_join(cn_t, cw_t)
-model_a <- subset(model, fleet == "A")
-
-# Read-in updated ----
-# fleet A -----
-
-canum_a_updated <- c()
-
-for (i in c(2022:2024)) {
-  canum_a <-
-    read_excel(
-      paste(
-        path_trans_split,
-        "Her21-IVaE_transfer_only_split_",
-        i,
-        ".xlsx",
-        sep = ""
-      ),
-      sheet = 3
-    )
-  canum_a_updated <- rbind(canum_a_updated, canum_a)
-}
-
-
-canum_a_updated <- rename(canum_a_updated, wbss_canum_1000 = canum_000)
-canum_a_updated$weca_g <- canum_a_updated$weca_kg * 1000
-canum_a_updated$fleet <- "A"
-canum_a_updated$wr <- ifelse(canum_a_updated$wr %in% c("8", "9"), "8+", canum_a_updated$wr)
-
-unique(canum_a_updated$year)
-
-model_a_minus <- subset(model_a, !(year %in% canum_a_updated$year))
-
-canum_a <- bind_rows(model_a_minus, canum_a_updated)
-table(canum_a$year, canum_a$fleet)
-
-# fleet C, D, F ----
-canum <-
-  read.table(paste(path_data, "updated_canum_wbss_nsas_2000-2024.csv", sep =
-                  ""), sep = ",", header = T)
-canum$weca_kg <- canum$weca_g / 1000
-
-# Combine ----
-
-canum <- bind_rows(canum, canum_a)
+canum <- bind_rows(canum3, canum4)
 
 canum$wbss_caton <- canum$wbss_canum_1000 * canum$weca_kg
 canum$nsas_caton <- canum$nsas_canum_1000 * canum$weca_kg
@@ -126,7 +57,7 @@ wbssFinal$weca_kg <- (wbssFinal$wbss_caton / wbssFinal$wbss_canum_1000)
 
 write.table(
   wbssFinal,
-  paste(path_data, "updated_wbss_multi_fleet_area_2000-2024.csv", sep = ""),
+  paste("data/", "C7_wbss_multi_fleet_area_", year_0, ".csv", sep = ""),
   sep = ",",
   row.names = F
 )
@@ -143,7 +74,7 @@ wbssFinal$weca_kg <- (wbssFinal$wbss_caton / wbssFinal$wbss_canum_1000)
 
 write.table(
   wbssFinal,
-  paste(path_data, "updated_wbss_multi_fleet_2000-2024.csv", sep = ""),
+  paste("data/", "C7_wbss_multi_fleet_", year_0, ".csv", sep = ""),
   sep = ",",
   row.names = F
 )
@@ -173,7 +104,7 @@ wbssFinal_t <-
 
 write.table(
   wbssFinal_t,
-  paste(path_data, "updated_wbss_multi_fleet_t_2000-2024.csv", sep = ""),
+  paste("data/", "C7_wbss_multi_fleet_t_", year_0, ".csv", sep = ""),
   sep = ",",
   row.names = F
 )
@@ -189,7 +120,7 @@ wbssFinal$weca_kg <- (wbssFinal$wbss_caton / wbssFinal$wbss_canum_1000)
 
 write.table(
   wbssFinal,
-  paste(path_data, "updated_wbss_single_fleet_2000-2024.csv", sep = ""),
+  paste("data/", "C7_wbss_single_fleet_", year_0, ".csv", sep = ""),
   sep = ",",
   row.names = F
 )
@@ -219,7 +150,7 @@ wbssFinal_t <-
 
 write.table(
   wbssFinal_t,
-  paste(path_data, "updated_wbss_single_fleet_t_2000-2024.csv", sep = ""),
+  paste("data/", "C7_wbss_single_fleet_t_", year_0, ".csv", sep = ""),
   sep = ",",
   row.names = F
 )
@@ -237,7 +168,7 @@ nsasFinal$weca_kg <- (nsasFinal$nsas_caton / nsasFinal$nsas_canum_1000)
 
 write.table(
   subset(nsasFinal, fleet %in% c("C", "D")),
-  paste(path_data, "updated_nsas_input_fleet_2000-2024.csv", sep = ""),
+  paste("data/", "C7_nsas_input_fleet_", year_0, ".csv", sep = ""),
   sep = ",",
   row.names = F
 )
@@ -253,7 +184,7 @@ nsasFinal$weca_kg <- (nsasFinal$nsas_caton / nsasFinal$nsas_canum_1000)
 
 write.table(
   subset(nsasFinal),
-  paste(path_data, "updated_nsas_input_total_2000-2024.csv", sep = ""),
+  paste("data/", "C7_nsas_input_total_", year_0, ".csv", sep = ""),
   sep = ",",
   row.names = F
 )
@@ -272,7 +203,7 @@ nsasFinal$weca_kg <- (nsasFinal$nsas_caton / nsasFinal$nsas_canum_1000)
 
 write.table(
   subset(nsasFinal),
-  paste(path_data, "updated_nsas_input_quarter_2000-2024.csv", sep = ""),
+  paste("data/", "C7_nsas_input_quarter_", year_0, ".csv", sep = ""),
   sep = ",",
   row.names = F
 )
@@ -293,7 +224,7 @@ nsasFinal$weca_kg <- (nsasFinal$nsas_caton / nsasFinal$nsas_canum_1000)
 
 write.table(
   subset(nsasFinal),
-  paste(path_data, "updated_nsas_input_fleet_area_2000-2024.csv", sep = ""),
+  paste("data/", "C7_nsas_input_fleet_area_", year_0, ".csv", sep = ""),
   sep = ",",
   row.names = F
 )
@@ -313,7 +244,7 @@ wbssFinalq$weca_kg <-
 
 write.table(
   wbssFinalq,
-  paste(path_data, "updated_wbss_input_quarter_2000-2024.csv", sep = ""),
+  paste("data/", "C7_wbss_input_quarter_", year_0, ".csv", sep = ""),
   sep = ",",
   row.names = F
 )
@@ -343,14 +274,14 @@ wbssFinalq_t <-
 
 write.table(
   wbssFinalq_t,
-  paste(path_data, "updated_wbss_input_quarter_t_2000-2024.csv", sep = ""),
+  paste("data/", "C7_wbss_input_quarter_t_", year_0, ".csv", sep = ""),
   sep = ",",
   row.names = F
 )
 
 # ```{r, eval = F}
 #
-# write.table(wbssFinal, paste(path_data,"wbbs_catch_input_model_", year, ".csv", sep=""), sep=",", row.names=F)
+# write.table(wbssFinal, paste("data/","wbbs_catch_input_model_", year, ".csv", sep=""), sep=",", row.names=F)
 #
 # ```
 #
@@ -359,19 +290,19 @@ write.table(
 # wbssWEST<-aggregate(cbind(wbss_canum_1000,caton)~year+wr+quarter, data=wbss, FUN=sum)
 # wbssWEST$weca_kg<-(wbssWEST$caton/wbssWEST$wbss_canum_1000)
 #
-# write.table(wbssWEST, paste(path_data,"wbbs_catch_west_input_model_", year, ".csv", sep=""), sep=",", row.names=F)
+# write.table(wbssWEST, paste("data/","wbbs_catch_west_input_model_", year, ".csv", sep=""), sep=",", row.names=F)
 # ```
 #
 # #Cacth WBSS and NSAS
 # ```{r, eval = F}
-# wbss3<-readRDS(paste(path_data,"3a_splitted_", year, ".rsd", sep=""))
+# wbss3<-readRDS(paste("data/","3a_splitted_", year, ".rsd", sep=""))
 # wbss3a<-subset(wbss3, area %in% c("27.3.a.20","27.3.a.21"))
 #
 # wbss3a$wbss_caton_t<-wbss3a$wbss_canum_1000*(wbss3a$weca_g/1000)
 # wbss3a$nsas_caton_t<-wbss3a$nsas_canum_1000*(wbss3a$weca_g/1000)
 #
 # prop<-aggregate(cbind(wbss_caton_t,nsas_caton_t)~year+fleet, data=wbss3a, FUN=sum)
-# write.table(prop, paste(path_data,"wbbs_nsas_prop_catch_input_model_", year, ".csv", sep=""), sep=",", row.names=F)
+# write.table(prop, paste("data/","wbbs_nsas_prop_catch_input_model_", year, ".csv", sep=""), sep=",", row.names=F)
 # ```
 #
 # ```{r, eval = F}
@@ -380,5 +311,5 @@ write.table(
 # wbss3$nsas_caton_t<-wbss3$nsas_canum_1000*(wbss3$weca_g/1000)
 #
 # prop<-aggregate(cbind(wbss_caton_t,nsas_caton_t)~year+area+fleet, data=wbss3, FUN=sum)
-# write.table(prop, paste(path_data,"wbbs_nsas_prop_catch_input_model_", year, ".csv", sep=""), sep=",", row.names=F)
+# write.table(prop, paste("data/","wbbs_nsas_prop_catch_input_model_", year, ".csv", sep=""), sep=",", row.names=F)
 # ```
